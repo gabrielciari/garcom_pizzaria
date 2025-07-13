@@ -1,73 +1,101 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>InstaBoost - Ganhe Seguidores Reais</title>
-  <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css"/>
+  <title>Loja de Seguidores - Carrinho com Cadastro</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
+<body class="bg-[#0d1117] text-white font-sans">
 
-<header class="hero">
-  <div class="hero-content">
-    <h1>InstaBoost 🚀</h1>
-    <p>Ganhe seguidores reais agora mesmo e aumente sua autoridade digital!</p>
-    <a href="#pacotes" class="cta">Ver Pacotes</a>
-  </div>
-</header>
+<section class="max-w-6xl mx-auto px-6 py-10">
+  <h1 class="text-4xl font-bold mb-10 text-center">Escolha seus Pacotes</h1>
 
-<main>
-  <section id="pacotes" class="pacotes-section" data-aos="fade-up">
-    <h2>Pacotes Disponíveis</h2>
-    <div class="pacote-cards">
-      <div class="card">
-        <h3>100 Seguidores</h3>
-        <p>R$2</p>
-      </div>
-      <div class="card">
-        <h3>500 Seguidores</h3>
-        <p>R$6</p>
-      </div>
-      <div class="card">
-        <h3>1.000 Seguidores</h3>
-        <p>R$10</p>
-      </div>
-      <div class="card">
-        <h3>2.000 Seguidores</h3>
-        <p>R$18</p>
-      </div>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <div class="bg-[#1f2937] p-6 rounded-xl shadow-lg">
+      <h2 class="text-xl font-bold mb-2">Instagram - 1K Seguidores</h2>
+      <p class="text-green-400 font-bold text-2xl mb-4">R$ 14,99</p>
+      <button onclick="addToCart('Instagram - 1K Seguidores', 14.99)" class="w-full bg-green-600 hover:bg-green-700 py-2 rounded font-semibold">Adicionar ao carrinho</button>
     </div>
-  </section>
+    <div class="bg-[#1f2937] p-6 rounded-xl shadow-lg">
+      <h2 class="text-xl font-bold mb-2">Instagram - 2.5K Seguidores</h2>
+      <p class="text-green-400 font-bold text-2xl mb-4">R$ 28,99</p>
+      <button onclick="addToCart('Instagram - 2.5K Seguidores', 28.99)" class="w-full bg-green-600 hover:bg-green-700 py-2 rounded font-semibold">Adicionar ao carrinho</button>
+    </div>
+    <div class="bg-[#1f2937] p-6 rounded-xl shadow-lg">
+      <h2 class="text-xl font-bold mb-2">COMBO: 1K + 500 Visualizações</h2>
+      <p class="text-yellow-300 font-bold text-2xl mb-4">R$ 19,90</p>
+      <button onclick="addToCart('COMBO: 1K + 500 Visualizações', 19.90)" class="w-full bg-yellow-500 hover:bg-yellow-600 py-2 rounded font-semibold text-black">Adicionar ao carrinho</button>
+    </div>
+  </div>
 
-  <section class="form-section" data-aos="fade-up">
-    <h2>Fazer Pedido</h2>
-    <form id="pedidoForm">
-      <label>Seu nome:</label>
-      <input type="text" id="nome" required />
-      
-      <label>@ do perfil (sem o @):</label>
-      <input type="text" id="usuario" required />
-      
-      <label>Quantidade de seguidores:</label>
-      <input type="number" id="quantidade" min="100" step="100" required />
-      
-      <div class="aviso">⚠️ O perfil deve estar público e não pode trocar o @ durante a entrega.</div>
-      
-      <button type="submit">Enviar Pedido pelo WhatsApp</button>
+  <div class="mt-16 bg-[#111827] p-6 rounded-xl shadow-xl">
+    <h3 class="text-2xl font-bold mb-4">👤 Cadastro do Cliente</h3>
+    <form id="cadastro-form" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+      <input required type="text" id="nome" placeholder="Nome completo" class="p-3 rounded bg-[#1f2937] border border-gray-700 text-white">
+      <input required type="text" id="usuario" placeholder="@usuario do Instagram" class="p-3 rounded bg-[#1f2937] border border-gray-700 text-white">
+      <input required type="email" id="email" placeholder="Email válido" class="p-3 rounded bg-[#1f2937] border border-gray-700 text-white">
     </form>
-  </section>
-</main>
 
-<a href="https://wa.me/5511988553006" class="whatsapp-float" target="_blank">📱 Atendimento</a>
+    <h3 class="text-2xl font-bold mb-4">🛒 Seu Carrinho</h3>
+    <ul id="cart-items" class="mb-4 text-sm space-y-2"></ul>
+    <p class="text-lg font-semibold mb-4">Total: <span id="cart-total">R$ 0,00</span></p>
+    <button onclick="finalizarCompra()" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 rounded">Finalizar compra no WhatsApp</button>
+  </div>
+</section>
 
-<footer>
-  <p>© 2025 InstaBoost. Todos os direitos reservados.</p>
-</footer>
-
-<script src="script.js"></script>
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-<script>AOS.init();</script>
+<script>
+const cart = [];
+function addToCart(produto, preco) {
+  cart.push({ produto, preco });
+  renderCart();
+}
+function removeFromCart(index) {
+  cart.splice(index, 1);
+  renderCart();
+}
+function renderCart() {
+  const cartItems = document.getElementById('cart-items');
+  const cartTotal = document.getElementById('cart-total');
+  cartItems.innerHTML = '';
+  let total = 0;
+  cart.forEach((item, index) => {
+    total += item.preco;
+    const li = document.createElement('li');
+    li.className = 'flex justify-between items-center';
+    li.innerHTML = `<span>${item.produto} - R$ ${item.preco.toFixed(2)}</span><button onclick="removeFromCart(${index})" class="text-red-400 hover:text-red-600 font-bold">✕</button>`;
+    cartItems.appendChild(li);
+  });
+  cartTotal.textContent = `R$ ${total.toFixed(2)}`;
+}
+function finalizarCompra() {
+  const nome = document.getElementById('nome').value.trim();
+  const usuario = document.getElementById('usuario').value.trim();
+  const email = document.getElementById('email').value.trim();
+  if (!nome || !usuario || !email) {
+    alert('Preencha todos os dados do cadastro antes de finalizar a compra.');
+    return;
+  }
+  if (cart.length === 0) {
+    alert('Seu carrinho está vazio!');
+    return;
+  }
+  fetch('salvar_pedido.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ nome, instagram: usuario, email, carrinho: cart })
+  });
+  let mensagem = `Olá! Gostaria de fazer um pedido com os seguintes dados:%0A`;
+  mensagem += `Nome: ${nome}%0AInstagram: ${usuario}%0AEmail: ${email}%0A%0AProdutos:%0A`;
+  let total = 0;
+  cart.forEach(item => {
+    mensagem += `- ${item.produto} - R$ ${item.preco.toFixed(2)}%0A`;
+    total += item.preco;
+  });
+  mensagem += `%0ATotal: R$ ${total.toFixed(2)}`;
+  const link = `https://api.whatsapp.com/send?phone=5511988553006&text=${mensagem}`;
+  window.open(link, '_blank');
+}
+</script>
 </body>
 </html>
