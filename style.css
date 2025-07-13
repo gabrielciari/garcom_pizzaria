@@ -1,0 +1,53 @@
+
+body {
+  font-family: Arial, sans-serif;
+  background: #fffaf3;
+  margin: 0;
+  padding: 0;
+}
+header {
+  background: #ff6600;
+  color: white;
+  padding: 20px;
+  text-align: center;
+}
+.produtos {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 20px;
+}
+.produto {
+  border: 2px solid #ff6600;
+  background: white;
+  margin: 10px;
+  padding: 10px;
+  width: 250px;
+  border-radius: 8px;
+  text-align: center;
+}
+.produto img {
+  max-width: 100%;
+}
+.carrinho {
+  background: #fff;
+  padding: 20px;
+  border-top: 2px solid #ff6600;
+}
+.frete, .cliente {
+  padding: 20px;
+  background: #fff;
+  margin-top: 10px;
+}
+input, textarea, button {
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px;
+  font-size: 1em;
+}
+button {
+  background: #ff6600;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
