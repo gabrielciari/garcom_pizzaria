@@ -1,129 +1,115 @@
-<!DOCTYPE html><html lang="pt-BR">
+<!DOCTYPE html>
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Loja de Seguidores - Carrinho</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Loja de Seguidores</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-[#0d1117] text-white font-sans"><section class="max-w-6xl mx-auto px-6 py-10">
-  <h1 class="text-4xl font-bold mb-10 text-center">Escolha seus Pacotes</h1>  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-    <!-- Produtos e Combos -->
-    <script>
-      const produtos = [
-        { nome: "Instagram - 1K Seguidores", preco: 14.99, descricao: "1.000 seguidores reais e brasileiros, entrega em até 24h." },
-        { nome: "Instagram - 2.5K Seguidores", preco: 28.99, descricao: "2.500 seguidores de alta qualidade, entrega rápida e segura." },
-        { nome: "Instagram - 5K Seguidores", preco: 49.90, descricao: "5.000 seguidores para impulsionar sua presença digital." },
-        { nome: "Instagram - 10K Seguidores", preco: 89.90, descricao: "Perfil com 10.000 seguidores passa mais credibilidade. Entrega garantida." },
-        { nome: "Instagram - 20K Seguidores", preco: 159.90, descricao: "Para influenciadores e marcas que desejam autoridade máxima." },
-        { nome: "Facebook - 1K Curtidas", preco: 19.90, descricao: "1.000 curtidas reais para sua página no Facebook." },
-        { nome: "TikTok - 1K Seguidores", preco: 22.90, descricao: "Ideal para crescimento no TikTok. Seguidores ativos." },
-        { nome: "YouTube - 1K Inscritos", preco: 39.90, descricao: "Inscrições reais para habilitar monetização no YouTube." },
-        { nome: "Twitter - 1K Seguidores", preco: 29.90, descricao: "Para aumentar sua influência no Twitter com seguidores reais." },
-        { nome: "LinkedIn - 500 Conexões", preco: 24.90, descricao: "Conexões reais para aumentar seu networking profissional." },{ nome: "Combo 1K Seguidores + 500 Views", preco: 19.90, descricao: "Pacote básico com seguidores e visualizações para impulsionar seu perfil." },
-    { nome: "Combo 5K Seguidores + 2K Views + 100 Curtidas", preco: 64.90, descricao: "Ótimo para engajamento completo no Instagram." },
-    { nome: "Combo 10K Seguidores + 5K Views + 500 Curtidas", preco: 129.90, descricao: "Promoção completa com crescimento e engajamento." },
-    { nome: "Combo 20K Seguidores + 10K Views + 1K Curtidas", preco: 249.90, descricao: "Pacote completo para marcas e influenciadores grandes." },
-    { nome: "Combo TikTok 5K Seguidores + 1K Curtidas", preco: 74.90, descricao: "Engajamento forte no TikTok, ideal para viralizar vídeos." },
-    { nome: "Combo YouTube 3K Inscritos + 1K Views", preco: 89.90, descricao: "Perfeito para monetização e crescimento rápido no YouTube." },
-    { nome: "Combo Facebook 2K Curtidas + 500 Shares", preco: 44.90, descricao: "Aumente a visibilidade da sua página com curtidas e compartilhamentos." },
-  ];
+<body class="bg-[#0d1117] text-white font-sans">
 
-  window.onload = () => {
-    const grid = document.querySelector(".grid");
-    produtos.forEach(p => {
-      const div = document.createElement("div");
-      div.className = "bg-[#1f2937] p-6 rounded-xl shadow-lg";
-      div.innerHTML = `
-        <h2 class="text-xl font-bold mb-2">${p.nome}</h2>
-        <p class="text-green-400 font-bold text-2xl mb-4">R$ ${p.preco.toFixed(2)}</p>
-        <button onclick="addToCart('${p.nome}', ${p.preco})" class="w-full bg-green-600 hover:bg-green-700 py-2 rounded font-semibold">Adicionar ao carrinho</button>
-        <button onclick="showDescription(\`${p.descricao}\`)" class="w-full bg-blue-500 hover:bg-blue-600 py-2 rounded font-semibold mt-2">📄 Ver descrição</button>
-      `;
-      grid.appendChild(div);
-    });
-  };
-</script>
+<section class="max-w-4xl mx-auto px-6 py-10">
+  <h1 class="text-4xl font-bold mb-6 text-center">Loja de Seguidores</h1>
 
-  </div>  <!-- Aviso com regras -->  <div class="bg-yellow-100 text-yellow-900 p-4 rounded mb-8 mt-14">
-    ⚠️ <strong>Aviso:</strong> Para receber os seguidores:
-    <ul class="list-disc pl-5 mt-2 text-sm text-yellow-800">
-      <li>Sua conta do Instagram precisa estar <strong>pública</strong></li>
-      <li>Não troque o @ após a compra</li>
-      <li>Não tenha bloqueios de idade ou região</li>
-      <li>Prazo de entrega: até 24 horas</li>
-    </ul>
-  </div>  <div class="mt-16 bg-[#111827] p-6 rounded-xl shadow-xl">
-    <h3 class="text-2xl font-bold mb-4">👤 Cadastro do Cliente</h3>
-    <form id="cadastro-form" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-      <input required type="text" id="nome" placeholder="Nome completo" class="p-3 rounded bg-[#1f2937] border border-gray-700 text-white" />
-      <input required type="text" id="usuario" placeholder="@usuario do Instagram" class="p-3 rounded bg-[#1f2937] border border-gray-700 text-white" />
-      <input required type="email" id="email" placeholder="Email válido" class="p-3 rounded bg-[#1f2937] border border-gray-700 text-white" />
-    </form><h3 class="text-2xl font-bold mb-4">🛒 Seu Carrinho</h3>
-<ul id="cart-items" class="mb-4 text-sm space-y-2"></ul>
-<p class="text-lg font-semibold mb-4">Total: <span id="cart-total">R$ 0,00</span></p>
-<button onclick="finalizarCompra()" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 rounded">Finalizar compra no WhatsApp</button>
+  <div class="bg-[#1f2937] p-6 rounded-xl mb-6 shadow-lg">
+    <h2 class="text-xl font-bold mb-2">📧 Verificação de E-mail</h2>
+    <input id="email" type="email" placeholder="Digite seu e-mail" class="p-2 w-full rounded text-black mb-2" />
+    <button onclick="enviarCodigo()" class="bg-blue-600 hover:bg-blue-700 p-2 rounded w-full">Enviar Código</button>
 
+    <div class="mt-4">
+      <input id="codigo" type="text" placeholder="Digite o código recebido" class="p-2 w-full rounded text-black mb-2" />
+      <button onclick="verificarCodigo()" class="bg-green-600 hover:bg-green-700 p-2 rounded w-full">Verificar Código</button>
+    </div>
+
+    <p id="status" class="mt-4 text-yellow-400 text-sm"></p>
   </div>
-</section><script>
-  const cart = [];
 
-  function addToCart(produto, preco) {
-    cart.push({ produto, preco });
-    renderCart();
+  <div class="bg-[#111827] p-6 rounded-xl shadow-xl">
+    <h2 class="text-xl font-bold mb-4">🛒 Carrinho de Compras</h2>
+    <button onclick="addToCart('Instagram - 1K Seguidores', 14.99)" class="bg-green-600 hover:bg-green-700 py-2 px-4 rounded mb-2">Adicionar 1K Seguidores</button>
+    <ul id="cart-items" class="mb-4 text-sm space-y-2"></ul>
+    <p class="text-lg font-semibold mb-4">Total: <span id="cart-total">R$ 0,00</span></p>
+    <button onclick="finalizarCompra()" id="finalizar" disabled class="w-full bg-gray-600 text-white font-bold py-3 rounded">Finalizar compra no WhatsApp</button>
+  </div>
+</section>
+
+<script>
+let cart = [];
+let descontoAplicado = false;
+
+function addToCart(produto, preco) {
+  cart.push({ produto, preco });
+  renderCart();
+}
+
+function renderCart() {
+  const cartItems = document.getElementById('cart-items');
+  const cartTotal = document.getElementById('cart-total');
+  cartItems.innerHTML = '';
+  let total = 0;
+  cart.forEach((item, index) => {
+    total += item.preco;
+    const li = document.createElement('li');
+    li.className = 'flex justify-between items-center';
+    li.innerHTML = `<span>${item.produto} - R$ ${item.preco.toFixed(2)}</span>`;
+    cartItems.appendChild(li);
+  });
+  if (descontoAplicado) {
+    total *= 0.94;
   }
+  cartTotal.textContent = `R$ ${total.toFixed(2)}`;
+}
 
-  function removeFromCart(index) {
-    cart.splice(index, 1);
-    renderCart();
+function finalizarCompra() {
+  let mensagem = `Olá! Gostaria de fazer um pedido com os seguintes produtos:%0A`;
+  let total = 0;
+  cart.forEach(item => {
+    mensagem += `- ${item.produto} - R$ ${item.preco.toFixed(2)}%0A`;
+    total += item.preco;
+  });
+  if (descontoAplicado) {
+    mensagem += `%0ADesconto aplicado: 6%%`;
+    total *= 0.94;
   }
+  mensagem += `%0ATotal: R$ ${total.toFixed(2)}`;
+  const link = `https://api.whatsapp.com/send?phone=5511988553006&text=${mensagem}`;
+  window.open(link, '_blank');
+}
 
-  function renderCart() {
-    const cartItems = document.getElementById('cart-items');
-    const cartTotal = document.getElementById('cart-total');
-    cartItems.innerHTML = '';
-    let total = 0;
-    cart.forEach((item, index) => {
-      total += item.preco;
-      const li = document.createElement('li');
-      li.className = 'flex justify-between items-center';
-      li.innerHTML = `<span>${item.produto} - R$ ${item.preco.toFixed(2)}</span><button onclick="removeFromCart(${index})" class="text-red-400 hover:text-red-600 font-bold">✕</button>`;
-      cartItems.appendChild(li);
-    });
-    cartTotal.textContent = `R$ ${total.toFixed(2)}`;
-  }
+function enviarCodigo() {
+  const email = document.getElementById('email').value;
+  fetch('enviar_codigo.php', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({email})
+  })
+  .then(res => res.json())
+  .then(data => document.getElementById('status').innerText = data.mensagem || data.erro);
+}
 
-  function finalizarCompra() {
-    const nome = document.getElementById('nome').value.trim();
-    const usuario = document.getElementById('usuario').value.trim();
-    const email = document.getElementById('email').value.trim();
-
-    if (!nome || !usuario || !email) {
-      alert('Preencha todos os dados do cadastro antes de finalizar a compra.');
-      return;
+function verificarCodigo() {
+  const email = document.getElementById('email').value;
+  const codigo = document.getElementById('codigo').value;
+  fetch('verificar_codigo.php', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({email, codigo})
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.status === 'ok') {
+      descontoAplicado = true;
+      renderCart();
+      document.getElementById('status').innerText = '✅ Código verificado! Desconto de 6% aplicado.';
+      document.getElementById('finalizar').disabled = false;
+      document.getElementById('finalizar').classList.remove('bg-gray-600');
+      document.getElementById('finalizar').classList.add('bg-green-500');
+    } else {
+      document.getElementById('status').innerText = data.erro;
     }
-
-    if (cart.length === 0) {
-      alert('Seu carrinho está vazio!');
-      return;
-    }
-
-    let mensagem = `Olá! Gostaria de fazer um pedido com os seguintes dados:%0A`;
-    mensagem += `Nome: ${nome}%0AInstagram: ${usuario}%0AEmail: ${email}%0A%0AProdutos:%0A`;
-
-    let total = 0;
-    cart.forEach(item => {
-      mensagem += `- ${item.produto} - R$ ${item.preco.toFixed(2)}%0A`;
-      total += item.preco;
-    });
-
-    mensagem += `%0ATotal: R$ ${total.toFixed(2)}`;
-
-    const link = `https://api.whatsapp.com/send?phone=5511988553006&text=${mensagem}`;
-    window.open(link, '_blank');
-  }
-
-  function showDescription(texto) {
-    alert("📋 Descrição do Produto:\n\n" + texto);
-  }
+  });
+}
 </script>
+
+</body>
 </html>
