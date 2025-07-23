@@ -1,100 +1,108 @@
 
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Aluguel de Veículos - Last Island Lite</title>
-  <style>
-    body { font-family: Arial, sans-serif; padding: 20px; background-color: #f3f3f3; }
-    h1, h2 { color: #2c3e50; }
-    .veiculo { border: 1px solid #ccc; background: #fff; padding: 10px; margin-bottom: 10px; }
-    button { margin-top: 5px; padding: 5px 10px; cursor: pointer; }
-    #carrinho, #feedbacks { margin-top: 20px; padding: 10px; background: #fff; border: 1px solid #ccc; }
-  </style>
+    <meta charset="UTF-8">
+    <title>Aluguel - Last Island</title>
+    <style>
+        body { font-family: Arial; background: #f0f0f0; padding: 20px; }
+        .veiculo { border: 1px solid #ccc; background: #fff; padding: 10px; margin: 10px 0; }
+        .carrinho, .feedback { background: #fff; padding: 10px; margin-top: 20px; border: 1px solid #ccc; }
+        button { padding: 5px 10px; margin-top: 5px; }
+    </style>
 </head>
 <body>
-  <h1>Aluguel de Veículos - Last Island of Survival Lite</h1>
-  <p><strong>⚠️ Para alugar, você precisa ter os materiais no jogo.</strong></p>
+    <h1>Aluguel de Veículos - Last Island</h1>
 
-  <div class="veiculo">
-    <h2>Mobilete - R$10,00</h2>
-    <p><strong>Materiais necessários:</strong> 5 Rodas, 10 Parafusos</p>
-    <button onclick="adicionarCarrinho('Mobilete', 10, '5 Rodas, 10 Parafusos')">Alugar</button>
-  </div>
+    <div class="veiculo">
+        <h3>Mobilete - R$10</h3>
+        <p>Materiais: 5x Parafusos, 1x Motor</p>
+        <button onclick="adicionarCarrinho('Mobilete', 10)">Adicionar ao Carrinho</button>
+    </div>
 
-  <div class="veiculo">
-    <h2>Moto - R$15,00</h2>
-    <p><strong>Materiais necessários:</strong> 6 Rodas, 12 Parafusos, 1 Motor</p>
-    <button onclick="adicionarCarrinho('Moto', 15, '6 Rodas, 12 Parafusos, 1 Motor')">Alugar</button>
-  </div>
+    <div class="veiculo">
+        <h3>Moto - R$15</h3>
+        <p>Materiais: 7x Parafusos, 2x Rodas, 1x Motor</p>
+        <button onclick="adicionarCarrinho('Moto', 15)">Adicionar ao Carrinho</button>
+    </div>
 
-  <div class="veiculo">
-    <h2>Helicóptero - R$30,00</h2>
-    <p><strong>Materiais necessários:</strong> 8 Hélices, 15 Parafusos, 1 Motor Turbo</p>
-    <button onclick="adicionarCarrinho('Helicóptero', 30, '8 Hélices, 15 Parafusos, 1 Motor Turbo')">Alugar</button>
-  </div>
+    <div class="veiculo">
+        <h3>Helicóptero - R$30</h3>
+        <p>Materiais: 20x Parafusos, 3x Hélices, 2x Motor</p>
+        <button onclick="adicionarCarrinho('Helicóptero', 30)">Adicionar ao Carrinho</button>
+    </div>
 
-  <div id="carrinho">
-    <h2>🛒 Carrinho</h2>
-    <ul id="listaCarrinho"></ul>
-    <p><strong>Total: R$<span id="total">0</span>,00</strong></p>
-  </div>
+    <div class="carrinho">
+        <h2>Carrinho</h2>
+        <ul id="lista-carrinho"></ul>
+        <p><strong>Total: R$<span id="total">0</span></strong></p>
+        <button onclick="finalizarCompra()">Finalizar Pedido</button>
+    </div>
 
-  <div id="feedbacks">
-    <h2>💬 Feedbacks</h2>
-    <textarea id="feedbackTexto" rows="3" style="width: 100%;" placeholder="Digite seu feedback..."></textarea>
-    <br>
-    <button onclick="adicionarFeedback()">Enviar Feedback</button>
-    <ul id="listaFeedbacks"></ul>
-  </div>
+    <div class="feedback">
+        <h2>Deixe seu Feedback</h2>
+        <textarea id="feedback" placeholder="Digite aqui..." rows="4" style="width:100%"></textarea><br>
+        <button onclick="salvarFeedback()">Enviar Feedback</button>
+        <h3>Feedbacks:</h3>
+        <ul id="lista-feedbacks"></ul>
+    </div>
 
-  <script>
-    const carrinho = [];
-    const feedbacks = [];
+    <script>
+        let carrinho = [];
 
-    function adicionarCarrinho(nome, preco, materiais) {
-      carrinho.push({ nome, preco, materiais });
-      atualizarCarrinho();
-    }
+        function adicionarCarrinho(item, valor) {
+            carrinho.push({ item, valor });
+            atualizarCarrinho();
+        }
 
-    function removerCarrinho(index) {
-      carrinho.splice(index, 1);
-      atualizarCarrinho();
-    }
+        function removerItem(index) {
+            carrinho.splice(index, 1);
+            atualizarCarrinho();
+        }
 
-    function atualizarCarrinho() {
-      const lista = document.getElementById("listaCarrinho");
-      const total = document.getElementById("total");
-      lista.innerHTML = "";
-      let soma = 0;
-      carrinho.forEach((item, index) => {
-        soma += item.preco;
-        const li = document.createElement("li");
-        li.innerHTML = `<strong>${item.nome}</strong> - R$${item.preco},00<br><em>Materiais:</em> ${item.materiais} <button onclick="removerCarrinho(${index})">Remover</button>`;
-        lista.appendChild(li);
-      });
-      total.textContent = soma;
-    }
+        function atualizarCarrinho() {
+            let lista = document.getElementById('lista-carrinho');
+            let total = 0;
+            lista.innerHTML = "";
+            carrinho.forEach((c, i) => {
+                lista.innerHTML += `<li>${c.item} - R$${c.valor} <button onclick="removerItem(${i})">Remover</button></li>`;
+                total += c.valor;
+            });
+            document.getElementById('total').innerText = total;
+        }
 
-    function adicionarFeedback() {
-      const texto = document.getElementById("feedbackTexto").value;
-      if (texto.trim() !== "") {
-        feedbacks.push(texto);
-        atualizarFeedbacks();
-        document.getElementById("feedbackTexto").value = "";
-      }
-    }
+        function finalizarCompra() {
+            if (carrinho.length === 0) {
+                alert("Adicione algum item ao carrinho.");
+                return;
+            }
+            let mensagem = "Pedido Last Island:%0A";
+            carrinho.forEach(c => mensagem += `• ${c.item} - R$${c.valor}%0A`);
+            let total = carrinho.reduce((s, c) => s + c.valor, 0);
+            mensagem += `%0ATotal: R$${total}`;
+            window.open("https://wa.me/5511940678019?text=" + mensagem, "_blank");
+        }
 
-    function atualizarFeedbacks() {
-      const lista = document.getElementById("listaFeedbacks");
-      lista.innerHTML = "";
-      feedbacks.forEach(fb => {
-        const li = document.createElement("li");
-        li.textContent = fb;
-        lista.appendChild(li);
-      });
-    }
-  </script>
+        function salvarFeedback() {
+            const texto = document.getElementById("feedback").value;
+            if (texto.trim() === "") return;
+            let feedbacks = JSON.parse(localStorage.getItem("feedbacks") || "[]");
+            feedbacks.push(texto);
+            localStorage.setItem("feedbacks", JSON.stringify(feedbacks));
+            document.getElementById("feedback").value = "";
+            mostrarFeedbacks();
+        }
+
+        function mostrarFeedbacks() {
+            let feedbacks = JSON.parse(localStorage.getItem("feedbacks") || "[]");
+            let lista = document.getElementById("lista-feedbacks");
+            lista.innerHTML = "";
+            feedbacks.forEach(f => {
+                lista.innerHTML += `<li>${f}</li>`;
+            });
+        }
+
+        window.onload = mostrarFeedbacks;
+    </script>
 </body>
 </html>
