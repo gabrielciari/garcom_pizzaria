@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Feedback</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <nav>
+    <a href="index.html">Início</a>
+    <a href="carrinho.html">Carrinho</a>
+    <a href="feedback.html">Feedback</a>
+  </nav>
+  <div class="container">
+    <h1>Deixe seu feedback</h1>
+    <form action="enviar.php" method="POST">
+      <label>Nome</label>
+      <input type="text" name="nome" required>
+
+      <label>Email</label>
+      <input type="email" name="email" required>
+
+      <label>Nota (1 a 5)</label>
+      <select name="nota" required>
+        <option value="5">5 - Excelente</option>
+        <option value="4">4 - Bom</option>
+        <option value="3">3 - Regular</option>
+        <option value="2">2 - Ruim</option>
+        <option value="1">1 - Péssimo</option>
+      </select>
+
+      <label>Comentário</label>
+      <textarea name="comentario" rows="5" required></textarea>
+
+      <button type="submit">Enviar Feedback</button>
+    </form>
+  </div>
+</body>
+</html>

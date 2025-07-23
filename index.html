@@ -1,185 +1,33 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Aluguel Last Island Lite</title>
+  <meta charset="UTF-8">
+  <title>Site com Carrinho e Feedback</title>
+  <link rel="stylesheet" href="style.css">
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #0a0a0a;
-      color: #f5f5f5;
-      margin: 0;
-      padding: 0;
-    }
-    header {
-      background: #1e1e1e;
-      padding: 20px;
-      text-align: center;
-    }
-    header h1 {
-      color: #00ff99;
-    }
-    .container {
-      padding: 20px;
-      max-width: 800px;
-      margin: auto;
-    }
-    .card {
-      background: #1a1a1a;
-      padding: 20px;
-      margin-bottom: 30px;
-      border-left: 5px solid #00ff99;
-      border-radius: 8px;
-    }
-    .card h2 {
-      margin-top: 0;
-    }
-    .price {
-      font-size: 24px;
-      color: #00ff99;
-    }
-    .materials {
-      font-size: 14px;
-      color: #ccc;
-      margin-top: 10px;
-    }
-    .button {
-      background: #00ff99;
-      color: black;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      margin-top: 15px;
-    }
-    .warning {
+    nav {
       background: #333;
       padding: 15px;
-      border-radius: 5px;
-      color: #ffcc00;
-      margin-bottom: 30px;
-    }
-    #cart {
-      background: #222;
-      padding: 20px;
-      border-radius: 10px;
-      margin-top: 40px;
-    }
-    #cart h3 {
-      margin-top: 0;
-    }
-    .cart-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 10px;
-    }
-    .remove-btn {
-      background: #ff4d4d;
-      border: none;
-      color: white;
-      padding: 5px 10px;
-      cursor: pointer;
-      border-radius: 4px;
-    }
-    .whatsapp-button {
       text-align: center;
-      margin-top: 30px;
     }
-    .whatsapp-button a {
-      background-color: #25D366;
+    nav a {
       color: white;
-      padding: 15px 25px;
+      margin: 0 15px;
       text-decoration: none;
-      font-size: 18px;
-      border-radius: 8px;
-      display: inline-block;
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
-
-  <header>
-    <h1>🚨 Aluguel de Veículos - Last Island Lite</h1>
-    <p>Escolha seu veículo e garanta mobilidade no jogo!</p>
-  </header>
+  <nav>
+    <a href="index.html">Início</a>
+    <a href="carrinho.html">Carrinho</a>
+    <a href="feedback.html">Feedback</a>
+  </nav>
 
   <div class="container">
-
-    <div class="card">
-      <h2>🛵 Mobilete</h2>
-      <p class="price">R$10,00</p>
-      <p class="materials">Materiais: 15 Engrenagens, 10 Peças de Ferro, 5 Cordas</p>
-      <button class="button" onclick="addToCart('Mobilete', 10)">Adicionar ao carrinho</button>
-    </div>
-
-    <div class="card">
-      <h2>🏍️ Moto</h2>
-      <p class="price">R$20,00</p>
-      <p class="materials">Materiais: 30 Engrenagens, 25 Peças de Ferro, 10 Cordas</p>
-      <button class="button" onclick="addToCart('Moto', 20)">Adicionar ao carrinho</button>
-    </div>
-
-    <div class="card">
-      <h2>🚁 Helicóptero</h2>
-      <p class="price">R$30,00</p>
-      <p class="materials">Materiais: 50 Engrenagens, 40 Peças de Ferro, 20 Cordas, 1 Hélice</p>
-      <button class="button" onclick="addToCart('Helicóptero', 30)">Adicionar ao carrinho</button>
-    </div>
-
-    <div class="warning">
-      ⚠️ Para alugar, é necessário ter os <strong>materiais no jogo</strong> para fabricar o veículo!
-    </div>
-
-    <div id="cart">
-      <h3>🛒 Carrinho de Aluguel</h3>
-      <div id="cart-items"></div>
-      <p><strong>Total:</strong> R$<span id="total">0.00</span></p>
-    </div>
-
-    <div class="whatsapp-button">
-      <a id="whatsapp-link" href="https://wa.me/5511940678019" target="_blank">📲 Finalizar no WhatsApp</a>
-    </div>
-
+    <h1>Bem-vindo ao nosso site!</h1>
+    <p>Explore nossos produtos e deixe seu feedback.</p>
   </div>
-
-  <script>
-    let cart = [];
-    function addToCart(item, price) {
-      cart.push({ item, price });
-      updateCart();
-    }
-
-    function removeFromCart(index) {
-      cart.splice(index, 1);
-      updateCart();
-    }
-
-    function updateCart() {
-      const cartItemsDiv = document.getElementById("cart-items");
-      cartItemsDiv.innerHTML = "";
-      let total = 0;
-
-      cart.forEach((entry, index) => {
-        total += entry.price;
-        const div = document.createElement("div");
-        div.className = "cart-item";
-        div.innerHTML = `${entry.item} - R$${entry.price.toFixed(2)} <button class="remove-btn" onclick="removeFromCart(${index})">Remover</button>`;
-        cartItemsDiv.appendChild(div);
-      });
-
-      document.getElementById("total").innerText = total.toFixed(2);
-
-      let message = "Olá! Quero alugar os seguintes veículos:%0A";
-      cart.forEach(e => {
-        message += `• ${e.item} - R$${e.price.toFixed(2)}%0A`;
-      });
-      message += `%0ATotal: R$${total.toFixed(2)}`;
-      document.getElementById("whatsapp-link").href = `https://wa.me/554399632114?text=${message}`;
-    }
-  </script>
-
 </body>
 </html>
