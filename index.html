@@ -1,22 +1,10 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Site com Carrinho e Feedback</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Aluguel de Veículos - Last Island</title>
   <link rel="stylesheet" href="style.css">
-  <style>
-    nav {
-      background: #333;
-      padding: 15px;
-      text-align: center;
-    }
-    nav a {
-      color: white;
-      margin: 0 15px;
-      text-decoration: none;
-      font-weight: bold;
-    }
-  </style>
 </head>
 <body>
   <nav>
@@ -24,10 +12,30 @@
     <a href="carrinho.html">Carrinho</a>
     <a href="feedback.html">Feedback</a>
   </nav>
-
   <div class="container">
-    <h1>Bem-vindo ao nosso site!</h1>
-    <p>Explore nossos produtos e deixe seu feedback.</p>
+    <h1>Aluguel de Veículos</h1>
+    <div id="produtos" class="produtos"></div>
   </div>
+  <script src="produtos.js"></script>
+  <script>
+    const container = document.getElementById('produtos');
+    produtos.forEach((p, i) => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <h3>${p.nome}</h3>
+        <p>${p.descricao}</p>
+        <p><strong>Materiais:</strong> ${p.materiais}</p>
+        <button onclick="adicionarCarrinho(${i})">Alugar</button>
+      `;
+      container.appendChild(card);
+    });
+    function adicionarCarrinho(id) {
+      let carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
+      carrinho.push(produtos[id]);
+      localStorage.setItem('carrinho', JSON.stringify(carrinho));
+      alert("Veículo adicionado ao carrinho!");
+    }
+  </script>
 </body>
 </html>

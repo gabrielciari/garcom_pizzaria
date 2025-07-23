@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Carrinho</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <nav>
+    <a href="index.html">Início</a>
+    <a href="carrinho.html">Carrinho</a>
+    <a href="feedback.html">Feedback</a>
+  </nav>
+  <div class="container">
+    <h1>Seu Carrinho</h1>
+    <div id="itens"></div>
+  </div>
+  <script>
+    function renderCarrinho() {
+      const itens = document.getElementById('itens');
+      let carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
+      if (carrinho.length === 0) {
+        itens.innerHTML = "<p>Carrinho vazio.</p>";
+        return;
+      }
+      itens.innerHTML = "";
+      carrinho.forEach((item, index) => {
+        const div = document.createElement("div");
+        div.className = "card";
+        div.innerHTML = `
+          <h3>${item.nome}</h3>
+          <p>${item.descricao}</p>
+          <p><strong>Materiais:</strong> ${item.materiais}</p>
+          <button onclick="remover(${index})">Remover</button>
+        `;
+        itens.appendChild(div);
+      });
+    }
+    function remover(index) {
+      let carrinho = JSON.parse(localStorage.getItem('carrinho'));
+      carrinho.splice(index, 1);
+      localStorage.setItem('carrinho', JSON.stringify(carrinho));
+      renderCarrinho();
+    }
+    renderCarrinho();
+  </script>
+</body>
+</html>
