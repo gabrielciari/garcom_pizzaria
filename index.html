@@ -1,40 +1,99 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Aluguel de Veículos - Last Island</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Aluguel de Veículos - Last Island Lite</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; background-color: #f3f3f3; }
+    h1, h2 { color: #2c3e50; }
+    .veiculo { border: 1px solid #ccc; background: #fff; padding: 10px; margin-bottom: 10px; }
+    button { margin-top: 5px; padding: 5px 10px; cursor: pointer; }
+    #carrinho, #feedbacks { margin-top: 20px; padding: 10px; background: #fff; border: 1px solid #ccc; }
+  </style>
 </head>
 <body>
-  <nav>
-    <a href="index.html">Início</a>
-    <a href="carrinho.html">Carrinho</a>
-    <a href="feedback.html">Feedback</a>
-  </nav>
-  <div class="container">
-    <h1>Aluguel de Veículos</h1>
-    <div id="produtos" class="produtos"></div>
+  <h1>Aluguel de Veículos - Last Island of Survival Lite</h1>
+  <p><strong>⚠️ Para alugar, você precisa ter os materiais no jogo.</strong></p>
+
+  <div class="veiculo">
+    <h2>Mobilete - R$10,00</h2>
+    <p><strong>Materiais necessários:</strong> 5 Rodas, 10 Parafusos</p>
+    <button onclick="adicionarCarrinho('Mobilete', 10, '5 Rodas, 10 Parafusos')">Alugar</button>
   </div>
-  <script src="produtos.js"></script>
+
+  <div class="veiculo">
+    <h2>Moto - R$15,00</h2>
+    <p><strong>Materiais necessários:</strong> 6 Rodas, 12 Parafusos, 1 Motor</p>
+    <button onclick="adicionarCarrinho('Moto', 15, '6 Rodas, 12 Parafusos, 1 Motor')">Alugar</button>
+  </div>
+
+  <div class="veiculo">
+    <h2>Helicóptero - R$30,00</h2>
+    <p><strong>Materiais necessários:</strong> 8 Hélices, 15 Parafusos, 1 Motor Turbo</p>
+    <button onclick="adicionarCarrinho('Helicóptero', 30, '8 Hélices, 15 Parafusos, 1 Motor Turbo')">Alugar</button>
+  </div>
+
+  <div id="carrinho">
+    <h2>🛒 Carrinho</h2>
+    <ul id="listaCarrinho"></ul>
+    <p><strong>Total: R$<span id="total">0</span>,00</strong></p>
+  </div>
+
+  <div id="feedbacks">
+    <h2>💬 Feedbacks</h2>
+    <textarea id="feedbackTexto" rows="3" style="width: 100%;" placeholder="Digite seu feedback..."></textarea>
+    <br>
+    <button onclick="adicionarFeedback()">Enviar Feedback</button>
+    <ul id="listaFeedbacks"></ul>
+  </div>
+
   <script>
-    const container = document.getElementById('produtos');
-    produtos.forEach((p, i) => {
-      const card = document.createElement('div');
-      card.className = 'card';
-      card.innerHTML = `
-        <h3>${p.nome}</h3>
-        <p>${p.descricao}</p>
-        <p><strong>Materiais:</strong> ${p.materiais}</p>
-        <button onclick="adicionarCarrinho(${i})">Alugar</button>
-      `;
-      container.appendChild(card);
-    });
-    function adicionarCarrinho(id) {
-      let carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
-      carrinho.push(produtos[id]);
-      localStorage.setItem('carrinho', JSON.stringify(carrinho));
-      alert("Veículo adicionado ao carrinho!");
+    const carrinho = [];
+    const feedbacks = [];
+
+    function adicionarCarrinho(nome, preco, materiais) {
+      carrinho.push({ nome, preco, materiais });
+      atualizarCarrinho();
+    }
+
+    function removerCarrinho(index) {
+      carrinho.splice(index, 1);
+      atualizarCarrinho();
+    }
+
+    function atualizarCarrinho() {
+      const lista = document.getElementById("listaCarrinho");
+      const total = document.getElementById("total");
+      lista.innerHTML = "";
+      let soma = 0;
+      carrinho.forEach((item, index) => {
+        soma += item.preco;
+        const li = document.createElement("li");
+        li.innerHTML = `<strong>${item.nome}</strong> - R$${item.preco},00<br><em>Materiais:</em> ${item.materiais} <button onclick="removerCarrinho(${index})">Remover</button>`;
+        lista.appendChild(li);
+      });
+      total.textContent = soma;
+    }
+
+    function adicionarFeedback() {
+      const texto = document.getElementById("feedbackTexto").value;
+      if (texto.trim() !== "") {
+        feedbacks.push(texto);
+        atualizarFeedbacks();
+        document.getElementById("feedbackTexto").value = "";
+      }
+    }
+
+    function atualizarFeedbacks() {
+      const lista = document.getElementById("listaFeedbacks");
+      lista.innerHTML = "";
+      feedbacks.forEach(fb => {
+        const li = document.createElement("li");
+        li.textContent = fb;
+        lista.appendChild(li);
+      });
     }
   </script>
 </body>
