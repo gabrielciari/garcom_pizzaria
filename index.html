@@ -2,48 +2,44 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Aluguel de Veículos - Last Island Lite</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Aluguel - Last Island Survival Lite</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="container">
-    <h1>Aluguel de Veículos - Last Island of Survival Lite</h1>
-
-    <div class="veiculos">
-      <div class="veiculo">
-        <h2>🏍️ Moto - R$15,00</h2>
-        <p>Materiais: 5x Parafuso, 10x Metal, 2x Roda</p>
-        <button onclick="adicionarAoCarrinho('Moto', 15)">Alugar</button>
+    <h1>🚨 Aluguel de Veículos - Last Island Survival Lite 🚨</h1>
+    
+    <div class="vehicles">
+      <div class="vehicle">
+        <h2>Mobilete - R$10</h2>
+        <p>Materiais: 20 Parafusos, 10 Placas</p>
+        <button onclick="addToCart('Mobilete', 10)">Alugar</button>
       </div>
-      <div class="veiculo">
-        <h2>🛵 Mobilete - R$10,00</h2>
-        <p>Materiais: 4x Parafuso, 8x Metal, 1x Roda</p>
-        <button onclick="adicionarAoCarrinho('Mobilete', 10)">Alugar</button>
+      <div class="vehicle">
+        <h2>Moto - R$15</h2>
+        <p>Materiais: 30 Parafusos, 15 Placas</p>
+        <button onclick="addToCart('Moto', 15)">Alugar</button>
       </div>
-      <div class="veiculo">
-        <h2>🚁 Helicóptero - R$30,00</h2>
-        <p>Materiais: 20x Parafuso, 30x Metal, 6x Hélice</p>
-        <button onclick="adicionarAoCarrinho('Helicóptero', 30)">Alugar</button>
+      <div class="vehicle">
+        <h2>Helicóptero - R$30</h2>
+        <p>Materiais: 50 Parafusos, 25 Placas, 10 Chips</p>
+        <button onclick="addToCart('Helicóptero', 30)">Alugar</button>
       </div>
     </div>
 
-    <div class="carrinho">
-      <h2>Carrinho</h2>
-      <ul id="itens-carrinho"></ul>
-      <p>Total: R$<span id="total">0</span></p>
-      <button onclick="finalizarCompra()">Finalizar Compra</button>
+    <div class="cart">
+      <h2>🛒 Carrinho</h2>
+      <ul id="cart-list"></ul>
+      <p id="total">Total: R$0</p>
+      <button onclick="finalizarCompra()">Finalizar e Enviar para WhatsApp</button>
     </div>
 
     <div class="feedback">
-      <h2>Deixe seu Feedback</h2>
-      <textarea id="feedback-texto" placeholder="Digite aqui..."></textarea>
-      <button onclick="salvarFeedback()">Enviar</button>
-    </div>
-
-    <div class="feedbacks-salvos">
-      <h2>Feedbacks de Jogadores</h2>
-      <ul id="lista-feedbacks"></ul>
+      <h2>💬 Deixe seu feedback:</h2>
+      <textarea id="feedback" placeholder="Digite aqui..."></textarea>
+      <button onclick="salvarFeedback()">Enviar Feedback</button>
+      <div id="feedbacks"></div>
     </div>
   </div>
 

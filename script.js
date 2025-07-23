@@ -1,64 +1,59 @@
-let carrinho = [];
+let cart = [];
 
-function adicionarAoCarrinho(nome, preco) {
-  carrinho.push({ nome, preco });
-  atualizarCarrinho();
+function addToCart(vehicle, price) {
+  cart.push({ vehicle, price });
+  renderCart();
 }
 
-function removerDoCarrinho(index) {
-  carrinho.splice(index, 1);
-  atualizarCarrinho();
+function removeFromCart(index) {
+  cart.splice(index, 1);
+  renderCart();
 }
 
-function atualizarCarrinho() {
-  const lista = document.getElementById('itens-carrinho');
-  const totalEl = document.getElementById('total');
-  lista.innerHTML = '';
+function renderCart() {
+  const list = document.getElementById('cart-list');
+  list.innerHTML = '';
   let total = 0;
 
-  carrinho.forEach((item, index) => {
+  cart.forEach((item, index) => {
+    total += item.price;
     const li = document.createElement('li');
-    li.textContent = `${item.nome} - R$${item.preco.toFixed(2)}`;
-    const btn = document.createElement('button');
-    btn.textContent = 'Remover';
-    btn.onclick = () => removerDoCarrinho(index);
-    li.appendChild(btn);
-    lista.appendChild(li);
-    total += item.preco;
+    li.innerHTML = `${item.vehicle} - R$${item.price} <button onclick="removeFromCart(${index})">Remover</button>`;
+    list.appendChild(li);
   });
 
-  totalEl.textContent = total.toFixed(2);
+  document.getElementById('total').innerText = `Total: R$${total}`;
 }
 
 function finalizarCompra() {
-  if (carrinho.length === 0) {
-    alert('Seu carrinho está vazio!');
+  if (cart.length === 0) {
+    alert("Adicione algum veículo ao carrinho!");
     return;
   }
-  alert('Compra finalizada com sucesso!');
-  carrinho = [];
-  atualizarCarrinho();
+
+  const numeroWhatsApp = "5511999999999"; // coloque seu número com DDD aqui
+  const texto = cart.map(item => `🚗 ${item.vehicle} - R$${item.price}`).join('%0A');
+  const total = cart.reduce((acc, item) => acc + item.price, 0);
+  const url = `https://wa.me/${numeroWhatsApp}?text=Olá! Quero alugar os seguintes veículos:%0A${texto}%0A%0ATotal: R$${total}`;
+  window.open(url, '_blank');
 }
 
 function salvarFeedback() {
-  const texto = document.getElementById('feedback-texto').value;
-  if (!texto) return alert('Digite algo!');
-  let feedbacks = JSON.parse(localStorage.getItem('feedbacks')) || [];
+  const input = document.getElementById('feedback');
+  const texto = input.value.trim();
+  if (!texto) return;
+
+  let feedbacks = JSON.parse(localStorage.getItem('feedbacks') || '[]');
   feedbacks.push(texto);
   localStorage.setItem('feedbacks', JSON.stringify(feedbacks));
-  document.getElementById('feedback-texto').value = '';
-  listarFeedbacks();
+  input.value = '';
+  renderFeedbacks();
 }
 
-function listarFeedbacks() {
-  const lista = document.getElementById('lista-feedbacks');
-  lista.innerHTML = '';
-  const feedbacks = JSON.parse(localStorage.getItem('feedbacks')) || [];
-  feedbacks.forEach(txt => {
-    const li = document.createElement('li');
-    li.textContent = txt;
-    lista.appendChild(li);
-  });
+function renderFeedbacks() {
+  const div = document.getElementById('feedbacks');
+  let feedbacks = JSON.parse(localStorage.getItem('feedbacks') || '[]');
+  div.innerHTML = '<h3>📝 Feedbacks anteriores:</h3><ul>' + feedbacks.map(f => `<li>${f}</li>`).join('') + '</ul>';
 }
 
-listarFeedbacks();
+window.onload = renderFeedbacks;
