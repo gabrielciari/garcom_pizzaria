@@ -1,115 +1,100 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Loja de Seguidores</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Aluguel Last Island Lite</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0a0a0a;
+      color: #f5f5f5;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background: #1e1e1e;
+      padding: 20px;
+      text-align: center;
+    }
+    header h1 {
+      color: #00ff99;
+    }
+    .container {
+      padding: 20px;
+      max-width: 700px;
+      margin: auto;
+    }
+    .card {
+      background: #1a1a1a;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-left: 5px solid #00ff99;
+      border-radius: 8px;
+    }
+    .card h2 {
+      margin-top: 0;
+    }
+    .price {
+      font-size: 24px;
+      color: #00ff99;
+    }
+    .warning {
+      background: #333;
+      padding: 15px;
+      border-radius: 5px;
+      margin-top: 20px;
+      color: #ffcc00;
+    }
+    .whatsapp-button {
+      display: block;
+      text-align: center;
+      margin-top: 30px;
+    }
+    .whatsapp-button a {
+      background-color: #25D366;
+      color: white;
+      padding: 15px 25px;
+      text-decoration: none;
+      font-size: 18px;
+      border-radius: 8px;
+    }
+  </style>
 </head>
-<body class="bg-[#0d1117] text-white font-sans">
+<body>
 
-<section class="max-w-4xl mx-auto px-6 py-10">
-  <h1 class="text-4xl font-bold mb-6 text-center">Loja de Seguidores</h1>
+  <header>
+    <h1>🚨 Aluguel de Veículos - Last Island Lite</h1>
+    <p>Rápido, prático e direto no jogo!</p>
+  </header>
 
-  <div class="bg-[#1f2937] p-6 rounded-xl mb-6 shadow-lg">
-    <h2 class="text-xl font-bold mb-2">📧 Verificação de E-mail</h2>
-    <input id="email" type="email" placeholder="Digite seu e-mail" class="p-2 w-full rounded text-black mb-2" />
-    <button onclick="enviarCodigo()" class="bg-blue-600 hover:bg-blue-700 p-2 rounded w-full">Enviar Código</button>
+  <div class="container">
 
-    <div class="mt-4">
-      <input id="codigo" type="text" placeholder="Digite o código recebido" class="p-2 w-full rounded text-black mb-2" />
-      <button onclick="verificarCodigo()" class="bg-green-600 hover:bg-green-700 p-2 rounded w-full">Verificar Código</button>
+    <div class="card">
+      <h2>🛵 Mobilete</h2>
+      <p class="price">R$10,00</p>
     </div>
 
-    <p id="status" class="mt-4 text-yellow-400 text-sm"></p>
+    <div class="card">
+      <h2>🏍️ Moto</h2>
+      <p class="price">R$20,00</p>
+    </div>
+
+    <div class="card">
+      <h2>🚁 Helicóptero</h2>
+      <p class="price">R$30,00</p>
+    </div>
+
+    <div class="warning">
+      ⚠️ Para alugar, é necessário ter os <strong>materiais no jogo</strong> para fabricar o veículo!
+    </div>
+
+    <div class="whatsapp-button">
+      <a href="https://wa.me/5511940678019?text=Ol%C3%A1%2C+quero+alugar+um+ve%C3%ADculo+no+Last+Island+Lite%21" target="_blank">📲 Alugar agora via WhatsApp</a>
+    </div>
+
   </div>
-
-  <div class="bg-[#111827] p-6 rounded-xl shadow-xl">
-    <h2 class="text-xl font-bold mb-4">🛒 Carrinho de Compras</h2>
-    <button onclick="addToCart('Instagram - 1K Seguidores', 14.99)" class="bg-green-600 hover:bg-green-700 py-2 px-4 rounded mb-2">Adicionar 1K Seguidores</button>
-    <ul id="cart-items" class="mb-4 text-sm space-y-2"></ul>
-    <p class="text-lg font-semibold mb-4">Total: <span id="cart-total">R$ 0,00</span></p>
-    <button onclick="finalizarCompra()" id="finalizar" disabled class="w-full bg-gray-600 text-white font-bold py-3 rounded">Finalizar compra no WhatsApp</button>
-  </div>
-</section>
-
-<script>
-let cart = [];
-let descontoAplicado = false;
-
-function addToCart(produto, preco) {
-  cart.push({ produto, preco });
-  renderCart();
-}
-
-function renderCart() {
-  const cartItems = document.getElementById('cart-items');
-  const cartTotal = document.getElementById('cart-total');
-  cartItems.innerHTML = '';
-  let total = 0;
-  cart.forEach((item, index) => {
-    total += item.preco;
-    const li = document.createElement('li');
-    li.className = 'flex justify-between items-center';
-    li.innerHTML = `<span>${item.produto} - R$ ${item.preco.toFixed(2)}</span>`;
-    cartItems.appendChild(li);
-  });
-  if (descontoAplicado) {
-    total *= 0.94;
-  }
-  cartTotal.textContent = `R$ ${total.toFixed(2)}`;
-}
-
-function finalizarCompra() {
-  let mensagem = `Olá! Gostaria de fazer um pedido com os seguintes produtos:%0A`;
-  let total = 0;
-  cart.forEach(item => {
-    mensagem += `- ${item.produto} - R$ ${item.preco.toFixed(2)}%0A`;
-    total += item.preco;
-  });
-  if (descontoAplicado) {
-    mensagem += `%0ADesconto aplicado: 6%%`;
-    total *= 0.94;
-  }
-  mensagem += `%0ATotal: R$ ${total.toFixed(2)}`;
-  const link = `https://api.whatsapp.com/send?phone=5511988553006&text=${mensagem}`;
-  window.open(link, '_blank');
-}
-
-function enviarCodigo() {
-  const email = document.getElementById('email').value;
-  fetch('enviar_codigo.php', {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({email})
-  })
-  .then(res => res.json())
-  .then(data => document.getElementById('status').innerText = data.mensagem || data.erro);
-}
-
-function verificarCodigo() {
-  const email = document.getElementById('email').value;
-  const codigo = document.getElementById('codigo').value;
-  fetch('verificar_codigo.php', {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({email, codigo})
-  })
-  .then(res => res.json())
-  .then(data => {
-    if (data.status === 'ok') {
-      descontoAplicado = true;
-      renderCart();
-      document.getElementById('status').innerText = '✅ Código verificado! Desconto de 6% aplicado.';
-      document.getElementById('finalizar').disabled = false;
-      document.getElementById('finalizar').classList.remove('bg-gray-600');
-      document.getElementById('finalizar').classList.add('bg-green-500');
-    } else {
-      document.getElementById('status').innerText = data.erro;
-    }
-  });
-}
-</script>
 
 </body>
 </html>
