@@ -3,517 +3,289 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>P&B Casa de Rações - Loja Completa</title>
-
-<!-- Google Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
-
+<title>Pedido de Pizzas - Garçom</title>
 <style>
-  /* Reset básico */
-  * {
-    margin: 0; padding: 0; box-sizing: border-box;
-  }
-
+  @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
   body {
-    font-family: 'Roboto', sans-serif;
-    background: #f9f9f9;
-    color: #333;
-    line-height: 1.6;
+    margin: 0;
+    font-family: 'Fredoka One', cursive, sans-serif;
+    background: linear-gradient(120deg, #FF5F6D, #FFC371);
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-  }
-
-  /* Header fixo */
-  header {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    background: #272727;
-    color: white;
-    padding: 1rem 2rem;
-    display: flex;
-    justify-content: space-between;
     align-items: center;
-    z-index: 1000;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-  }
-  header h1 {
-    font-weight: 700;
-    font-size: 1.5rem;
-    cursor: default;
-  }
-
-  nav ul {
-    list-style: none;
-    display: flex;
-    gap: 1.5rem;
-  }
-  nav ul li {
-    cursor: pointer;
-  }
-  nav ul li a {
-    text-decoration: none;
-    color: white;
-    font-weight: 500;
-    transition: color 0.3s;
-  }
-  nav ul li a:hover {
-    color: #ffa500;
-  }
-
-  main {
-    flex: 1;
-    padding-top: 90px; /* espaço para header fixo */
-    max-width: 1200px;
-    margin: auto;
-    padding-left: 1rem;
-    padding-right: 1rem;
-  }
-
-  /* Home / Hero */
-  .hero {
-    background: linear-gradient(90deg, #ffa500cc, #ff7f0080), url('https://images.unsplash.com/photo-1568605114967-8130f3a36994?auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
-    color: white;
-    border-radius: 10px;
-    padding: 3rem 2rem;
-    margin-bottom: 3rem;
-    text-align: center;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-  }
-  .hero h2 {
-    font-size: 2.8rem;
-    margin-bottom: 1rem;
-    text-shadow: 1px 1px 6px rgba(0,0,0,0.6);
-  }
-  .hero p {
-    font-size: 1.3rem;
-    margin-bottom: 2rem;
-    text-shadow: 1px 1px 6px rgba(0,0,0,0.5);
-  }
-  .hero button {
-    background: white;
-    color: #ff7f00;
-    border: none;
-    padding: 1rem 2rem;
-    font-size: 1.2rem;
-    font-weight: 700;
-    border-radius: 40px;
-    cursor: pointer;
-    transition: background 0.3s;
-    box-shadow: 0 4px 10px #ffa500aa;
-  }
-  .hero button:hover {
-    background: #ff7f00;
-    color: white;
-  }
-
-  /* Seção Sobre */
-  section.sobre {
-    margin-bottom: 3rem;
-    padding: 2rem 1rem;
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 4px 14px rgba(0,0,0,0.1);
-  }
-  section.sobre h3 {
-    font-size: 2rem;
-    margin-bottom: 1rem;
-    text-align: center;
-    color: #272727;
-  }
-  section.sobre p {
-    max-width: 800px;
-    margin: auto;
-    font-size: 1.1rem;
-    color: #444;
-    text-align: justify;
-    line-height: 1.8;
-  }
-
-  /* Produtos */
-  section.produtos {
-    margin-bottom: 3rem;
-  }
-  section.produtos h3 {
-    font-size: 2rem;
-    margin-bottom: 2rem;
-    text-align: center;
-    color: #272727;
-  }
-  .produtos-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
-    gap: 2rem;
-  }
-  .produto-card {
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 6px 14px rgba(0,0,0,0.1);
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    transition: transform 0.3s;
-  }
-  .produto-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
-  }
-  .produto-card img {
-    width: 100%;
-    height: 180px;
-    object-fit: cover;
-  }
-  .produto-info {
-    padding: 1rem 1.2rem;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-  .produto-info h4 {
-    margin-bottom: 0.6rem;
-    font-weight: 700;
-    color: #ff7f00;
-  }
-  .produto-info p {
-    font-size: 0.9rem;
-    color: #666;
-    flex: 1;
-  }
-  .produto-info .preco {
-    font-weight: 700;
-    color: #272727;
-    margin: 1rem 0;
-    font-size: 1.1rem;
-  }
-  .produto-info button {
-    background: #ff7f00;
-    border: none;
-    color: white;
-    padding: 0.7rem 1rem;
-    font-weight: 700;
-    cursor: pointer;
-    border-radius: 30px;
-    transition: background 0.3s;
-  }
-  .produto-info button:hover {
-    background: #ffa500;
-  }
-
-  /* Carrinho */
-  aside.carrinho {
-    position: fixed;
-    right: 0; top: 70px; bottom: 0;
-    width: 320px;
-    background: #fff;
-    box-shadow: -4px 0 20px rgba(0,0,0,0.2);
-    padding: 1rem;
-    overflow-y: auto;
-    transform: translateX(100%);
-    transition: transform 0.3s ease-in-out;
-    z-index: 1500;
-  }
-  aside.carrinho.aberto {
-    transform: translateX(0);
-  }
-  aside.carrinho h3 {
-    text-align: center;
-    margin-bottom: 1rem;
-    color: #ff7f00;
-    font-weight: 700;
-  }
-  .carrinho-item {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 1rem;
-    border-bottom: 1px solid #ddd;
-    padding-bottom: 0.6rem;
-  }
-  .carrinho-item span {
-    font-weight: 600;
-  }
-  .carrinho-total {
-    text-align: center;
-    font-size: 1.3rem;
-    font-weight: 700;
-    margin-top: 1.5rem;
-    color: #272727;
-  }
-  button#fecharCarrinho {
-    background: transparent;
-    border: none;
-    font-size: 1.5rem;
-    color: #ff7f00;
-    cursor: pointer;
-    position: absolute;
-    top: 10px;
-    right: 15px;
-  }
-  button#btnAbrirCarrinho {
-    position: fixed;
-    bottom: 25px;
-    right: 25px;
-    background: #ff7f00;
-    border: none;
-    color: white;
-    font-size: 1.6rem;
-    padding: 0.8rem 1.2rem;
-    border-radius: 50%;
-    box-shadow: 0 4px 12px #ff7f00aa;
-    cursor: pointer;
-    z-index: 2000;
-    transition: background 0.3s;
-  }
-  button#btnAbrirCarrinho:hover {
-    background: #ffa500;
-  }
-
-  /* Seção Serviços */
-  section.servicos {
-    margin-bottom: 3rem;
-    padding: 2rem 1rem;
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 4px 14px rgba(0,0,0,0.1);
-  }
-  section.servicos h3 {
-    font-size: 2rem;
-    margin-bottom: 1rem;
-    text-align: center;
-    color: #272727;
-  }
-  ul.lista-servicos {
-    list-style-type: square;
-    max-width: 700px;
-    margin: auto;
-    font-size: 1.1rem;
-    color: #444;
-  }
-  ul.lista-servicos li {
-    margin-bottom: 0.7rem;
-  }
-
-  /* Seção Contato */
-  section.contato {
-    margin-bottom: 3rem;
-    padding: 2rem 1rem;
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 4px 14px rgba(0,0,0,0.1);
-    max-width: 700px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  section.contato h3 {
-    font-size: 2rem;
-    margin-bottom: 1rem;
-    text-align: center;
-    color: #272727;
-  }
-  form#formContato {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-  form#formContato label {
-    font-weight: 600;
     color: #333;
   }
-  form#formContato input, 
-  form#formContato textarea {
-    padding: 0.7rem;
-    border-radius: 6px;
-    border: 1px solid #ccc;
+  header {
+    margin: 20px 0 10px;
+    font-size: 2.2rem;
+    color: white;
+    text-shadow: 2px 2px 4px #800000;
+  }
+  main {
+    width: 90%;
+    max-width: 400px;
+    background: #fff8f0cc;
+    border-radius: 12px;
+    padding: 15px 20px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+  }
+  label {
+    font-weight: 600;
+    margin-top: 10px;
+    display: block;
+    color: #800000;
+  }
+  select, input[type="number"], input[type="text"], textarea {
+    width: 100%;
+    padding: 8px 10px;
+    margin-top: 5px;
+    border-radius: 8px;
+    border: 1.5px solid #d88a75;
     font-size: 1rem;
+  }
+  textarea {
     resize: vertical;
   }
-  form#formContato input:focus,
-  form#formContato textarea:focus {
-    outline-color: #ff7f00;
-    border-color: #ff7f00;
-  }
-  form#formContato button {
-    background: #ff7f00;
-    border: none;
+  .btn {
+    background-color: #d8544a;
     color: white;
-    padding: 0.9rem;
     font-weight: 700;
-    border-radius: 30px;
+    font-size: 1.2rem;
+    margin-top: 20px;
+    width: 100%;
+    border: none;
+    padding: 12px 0;
+    border-radius: 10px;
     cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 6px 10px rgba(216,84,74,0.7);
+  }
+  .btn:hover {
+    background-color: #bf3e38;
+  }
+  .item-list {
+    margin-top: 15px;
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid #f2b8a4;
+    border-radius: 8px;
+    background: #fff5f1;
+  }
+  .item {
+    display: flex;
+    justify-content: space-between;
+    padding: 7px 12px;
+    border-bottom: 1px solid #f2b8a4;
     font-size: 1.1rem;
-    transition: background 0.3s;
   }
-  form#formContato button:hover {
-    background: #ffa500;
+  .item:last-child {
+    border-bottom: none;
   }
-
-  /* Rodapé */
-  footer {
-    background: #272727;
-    color: white;
+  .qty-input {
+    width: 50px;
+    border-radius: 6px;
+    border: 1.2px solid #d88a75;
+    padding: 3px 5px;
+    font-size: 1rem;
     text-align: center;
-    padding: 1.2rem 1rem;
-    font-size: 0.9rem;
   }
-
-  /* Responsividade */
-  @media (max-width: 768px) {
-    nav ul {
-      flex-direction: column;
-      background: #272727;
-      position: fixed;
-      top: 60px;
-      right: -100%;
-      width: 200px;
-      height: 100vh;
-      padding-top: 2rem;
-      transition: right 0.3s ease-in-out;
-      border-radius: 0 0 0 10px;
-    }
-    nav ul.aberto {
-      right: 0;
-    }
-    nav ul li {
-      margin-bottom: 1.5rem;
-    }
-    button#menuMobile {
-      display: block;
-      background: transparent;
-      border: none;
-      font-size: 1.8rem;
-      color: white;
-      cursor: pointer;
-    }
-    /* Carrinho no mobile menor */
-    aside.carrinho {
-      width: 100%;
-      height: 300px;
-      top: auto;
-      bottom: 0;
-      right: 0;
-      transform: translateY(100%);
-      box-shadow: 0 -4px 20px rgba(0,0,0,0.2);
-      border-radius: 10px 10px 0 0;
-    }
-    aside.carrinho.aberto {
-      transform: translateY(0);
-    }
-    button#btnAbrirCarrinho {
-      right: 15px;
-      bottom: 15px;
-      padding: 0.6rem 0.9rem;
-      font-size: 1.4rem;
-    }
+  .remove-btn {
+    background: transparent;
+    border: none;
+    font-weight: 900;
+    color: #c0392b;
+    cursor: pointer;
+    font-size: 1.3rem;
+  }
+  footer {
+    margin: 30px 0;
+    font-size: 0.9rem;
+    color: #fff;
+    text-align: center;
+    user-select: none;
+  }
+  /* Scrollbar estilizado */
+  .item-list::-webkit-scrollbar {
+    width: 8px;
+  }
+  .item-list::-webkit-scrollbar-thumb {
+    background: #d8544a;
+    border-radius: 10px;
+  }
+  .item-list::-webkit-scrollbar-track {
+    background: #ffd9cc;
+    border-radius: 10px;
   }
 </style>
 </head>
 <body>
-
-<header>
-  <h1>P&B Casa de Rações</h1>
-  <button id="menuMobile" aria-label="Abrir menu">&#9776;</button>
-  <nav>
-    <ul id="navLinks">
-      <li><a href="#home" class="scroll-link">Home</a></li>
-      <li><a href="#sobre" class="scroll-link">Sobre</a></li>
-      <li><a href="#produtos" class="scroll-link">Produtos</a></li>
-      <li><a href="#servicos" class="scroll-link">Serviços</a></li>
-      <li><a href="#contato" class="scroll-link">Contato</a></li>
-    </ul>
-  </nav>
-</header>
-
+<header>🍕 Pedido de Pizzas - Garçom</header>
 <main>
+  <label for="pizza-select">Escolha a pizza</label>
+  <select id="pizza-select">
+    <option value="" disabled selected>-- Selecione --</option>
+    <option value="Calabresa">Calabresa</option>
+    <option value="Margherita">Margherita</option>
+    <option value="Portuguesa">Portuguesa</option>
+    <option value="Frango com Catupiry">Frango com Catupiry</option>
+    <option value="Quatro Queijos">Quatro Queijos</option>
+    <option value="Napolitana">Napolitana</option>
+  </select>
 
-  <!-- Home -->
-  <section id="home" class="hero">
-    <h2>Bem-vindo à P&B Casa de Rações</h2>
-    <p>Qualidade, variedade e carinho para o seu melhor amigo!</p>
-    <button id="btnAbrirCarrinhoHero">Ver Carrinho</button>
-  </section>
+  <label for="bordas-select">Escolha a borda</label>
+  <select id="bordas-select">
+    <option value="Normal" selected>Normal</option>
+    <option value="Catupiry">Catupiry</option>
+    <option value="Cheddar">Cheddar</option>
+    <option value="Chocolate">Chocolate</option>
+  </select>
 
-  <!-- Sobre -->
-  <section id="sobre" class="sobre">
-    <h3>Sobre Nós</h3>
-    <p>
-      Fundada em 2023, a P&B Casa de Rações é referência em produtos para seu pet. Oferecemos rações selecionadas, acessórios e um atendimento de excelência. Nosso objetivo é garantir saúde e felicidade para seu companheiro.
-    </p>
-  </section>
+  <label for="bebida-select">Escolha a bebida</label>
+  <select id="bebida-select">
+    <option value="" disabled selected>-- Selecione --</option>
+    <option value="Coca-Cola 350ml">Coca-Cola 350ml</option>
+    <option value="Guaraná 350ml">Guaraná 350ml</option>
+    <option value="Fanta Laranja 350ml">Fanta Laranja 350ml</option>
+    <option value="Água 500ml">Água 500ml</option>
+    <option value="Suco Natural">Suco Natural</option>
+  </select>
 
-  <!-- Produtos -->
-  <section id="produtos" class="produtos">
-    <h3>Nossos Produtos</h3>
-    <div class="produtos-grid" id="produtosGrid">
-      <!-- Produtos gerados pelo JS -->
-    </div>
-  </section>
+  <label for="mesa-input">Número da mesa</label>
+  <input type="number" id="mesa-input" min="1" placeholder="Ex: 5" />
 
-  <!-- Serviços -->
-  <section id="servicos" class="servicos">
-    <h3>Serviços</h3>
-    <ul class="lista-servicos">
-      <li>Entrega rápida e segura em toda a região</li>
-      <li>Consultoria personalizada para alimentação pet</li>
-      <li>Programa de fidelidade e descontos exclusivos</li>
-      <li>Atendimento e suporte especializado</li>
-    </ul>
-  </section>
+  <label for="pagamento-select">Forma de pagamento</label>
+  <select id="pagamento-select">
+    <option value="Dinheiro" selected>Dinheiro</option>
+    <option value="Cartão">Cartão</option>
+    <option value="Pix">Pix</option>
+  </select>
 
-  <!-- Contato -->
-  <section id="contato" class="contato">
-    <h3>Fale Conosco</h3>
-    <form id="formContato" novalidate>
-      <label for="nome">Nome completo</label>
-      <input type="text" id="nome" name="nome" placeholder="Seu nome" required minlength="3" />
+  <label for="obs-textarea">Observações (opcional)</label>
+  <textarea id="obs-textarea" rows="3" placeholder="Sem cebola, mais queijo, etc..."></textarea>
 
-      <label for="email">E-mail</label>
-      <input type="email" id="email" name="email" placeholder="seuemail@exemplo.com" required />
+  <button class="btn" id="add-item-btn">Adicionar ao pedido</button>
 
-      <label for="telefone">Telefone (opcional)</label>
-      <input type="tel" id="telefone" name="telefone" placeholder="(99) 99999-9999" pattern="^\?\\d{2}\?\\s?\\d{4,5}-?\\d{4}$" />
+  <div class="item-list" id="pedido-lista"></div>
 
-      <label for="mensagem">Mensagem</label>
-      <textarea id="mensagem" name="mensagem" rows="5" placeholder="Escreva sua mensagem aqui..." required minlength="5"></textarea>
-
-      <button type="submit">Enviar Mensagem</button>
-    </form>
-    <p id="respostaContato" style="margin-top:1rem; text-align:center; color:green; font-weight:700;"></p>
-  </section>
-
+  <button class="btn" id="finalizar-btn" style="margin-top: 20px;" disabled>Finalizar Pedido</button>
 </main>
 
-<!-- Carrinho -->
-<aside class="carrinho" id="carrinho">
-  <button id="fecharCarrinho" aria-label="Fechar carrinho">&times;</button>
-  <h3>Seu Carrinho</h3>
-  <div id="listaCarrinho">
-    <p style="text-align:center; color:#999;">Nenhum produto adicionado.</p>
-  </div>
-  <div class="carrinho-total" id="totalCarrinho">Total: R$ 0,00</div>
-  <button id="finalizarCompra" disabled>Finalizar Compra via WhatsApp</button>
-</aside>
-
-<!-- Botão abrir carrinho -->
-<button id="btnAbrirCarrinho" aria-label="Abrir carrinho">&#128722;</button>
+<footer>™ Opportunità Pizzaria Social - Desenvolvido por ChatGPT</footer>
 
 <script>
-  // Produtos de teste
-  const produtos = [
-    {
-      id: 1,
-      nome: "Ração Premium para Cães - 10kg",
-      descricao: "Ração balanceada para cães adultos de todas as raças.",
-      preco: 189.90,
-      imagem: "https://images.unsplash.com/photo-1558788353-f76d92427f16?auto=format&fit=crop&w=400&q=80"
-    },
-    {
-      id: 2,
-      nome: "Ração Super Premium para Gatos - 5kg",
-      descricao: "Alimentação rica e saudável para seu gato.",
-      preco: 129.50,
-      imagem: "https://images.unsplash.com/photo-1518717758536-85ae29035b6d?auto=format&fit=crop&w=400&q=80"
-    },
-    {
-      id: 3,
-      nome: "Brinquedo Mordedor para Cães",
-      descricao: "
+  const pizzaSelect = document.getElementById('pizza-select');
+  const bordaSelect = document.getElementById('bordas-select');
+  const bebidaSelect = document.getElementById('bebida-select');
+  const mesaInput = document.getElementById('mesa-input');
+  const pagamentoSelect = document.getElementById('pagamento-select');
+  const obsTextarea = document.getElementById('obs-textarea');
+  const addItemBtn = document.getElementById('add-item-btn');
+  const pedidoLista = document.getElementById('pedido-lista');
+  const finalizarBtn = document.getElementById('finalizar-btn');
+
+  let pedidoItens = [];
+
+  function atualizarLista() {
+    pedidoLista.innerHTML = '';
+    pedidoItens.forEach((item, index) => {
+      const div = document.createElement('div');
+      div.className = 'item';
+
+      div.innerHTML = `
+        <div>
+          <strong>${item.pizza}</strong> | Borda: ${item.borda} | Bebida: ${item.bebida || '-'}
+        </div>
+        <button class="remove-btn" data-index="${index}">&times;</button>
+      `;
+      pedidoLista.appendChild(div);
+    });
+
+    finalizarBtn.disabled = pedidoItens.length === 0 || mesaInput.value === '';
+  }
+
+  addItemBtn.addEventListener('click', () => {
+    const pizza = pizzaSelect.value;
+    const borda = bordaSelect.value;
+    const bebida = bebidaSelect.value;
+    const mesa = mesaInput.value.trim();
+
+    if (!pizza) {
+      alert('Selecione uma pizza!');
+      return;
+    }
+    if (!mesa) {
+      alert('Informe o número da mesa!');
+      return;
+    }
+
+    pedidoItens.push({ pizza, borda, bebida });
+    atualizarLista();
+
+    // Limpar campos para novo item
+    pizzaSelect.selectedIndex = 0;
+    bordaSelect.selectedIndex = 0;
+    bebidaSelect.selectedIndex = 0;
+  });
+
+  pedidoLista.addEventListener('click', (e) => {
+    if (e.target.classList.contains('remove-btn')) {
+      const idx = e.target.dataset.index;
+      pedidoItens.splice(idx, 1);
+      atualizarLista();
+    }
+  });
+
+  mesaInput.addEventListener('input', () => {
+    finalizarBtn.disabled = pedidoItens.length === 0 || mesaInput.value === '';
+  });
+
+  finalizarBtn.addEventListener('click', () => {
+    if (pedidoItens.length === 0) {
+      alert('Adicione ao menos um item ao pedido!');
+      return;
+    }
+    if (!mesaInput.value.trim()) {
+      alert('Informe o número da mesa!');
+      return;
+    }
+
+    const formaPagamento = pagamentoSelect.value;
+    const observacoes = obsTextarea.value.trim();
+    const mesa = mesaInput.value.trim();
+
+    // Montar mensagem para WhatsApp
+    let msg = `🧾 *Novo pedido* - Mesa: ${mesa}\n\n`;
+
+    pedidoItens.forEach((item, i) => {
+      msg += `🍕 ${item.pizza} | Borda: ${item.borda} | Bebida: ${item.bebida || '-'}\n`;
+    });
+    msg += `\n💰 Forma de pagamento: ${formaPagamento}\n`;
+    if (observacoes) {
+      msg += `📝 Observações: ${observacoes}\n`;
+    }
+    const encodedMsg = encodeURIComponent(msg);
+    const whatsappNumber = '5511988553006'; // Seu número da cozinha
+
+    // Abrir WhatsApp no celular/PC
+    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMsg}`;
+    window.open(whatsappUrl, '_blank');
+
+    // Enviar pedido para o painel via localStorage (simples pra demo)
+    const pedidosPainel = JSON.parse(localStorage.getItem('pedidosPainel') || '[]');
+    pedidosPainel.push({mesa, itens: pedidoItens, formaPagamento, observacoes, timestamp: Date.now()});
+    localStorage.setItem('pedidosPainel', JSON.stringify(pedidosPainel));
+
+    // Resetar pedido
+    pedidoItens = [];
+    atualizarLista();
+    mesaInput.value = '';
+    obsTextarea.value = '';
+    pagamentoSelect.selectedIndex = 0;
+
+    alert('Pedido enviado com sucesso!');
+  });
+
+</script>
+</body>
+</html>
