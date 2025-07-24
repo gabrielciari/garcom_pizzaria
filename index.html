@@ -1,28 +1,92 @@
+
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>P&B Casa de Rações</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    body { background: #f3f4f6; }
+    .card { @apply bg-white p-4 rounded-xl shadow-md; }
+    .btn { @apply bg-green-600 text-white px-4 py-2 rounded-lg mt-2; }
+  </style>
 </head>
-<body>
-  <header class="bg-primary text-white text-center p-3">
-    <h1>P&B Casa de Rações</h1>
-    <p>Produtos para seu pet com carinho 🐾</p>
-  </header>
+<body class="p-4">
+  <h1 class="text-2xl font-bold text-center mb-4">🐾 P&B Casa de Rações</h1>
 
-  <div class="container my-4">
-    <div class="row" id="product-list">
-      <!-- Produtos serão inseridos via script -->
-    </div>
+  <div id="produtos" class="grid grid-cols-2 gap-4"></div>
+
+  <h2 class="text-xl font-bold mt-6 mb-2">🛒 Carrinho</h2>
+  <ul id="carrinho" class="mb-2"></ul>
+  <p class="font-bold">Total: R$ <span id="total">0.00</span></p>
+
+  <div class="mt-4">
+    <input type="text" id="nome" placeholder="Seu nome" class="border p-2 w-full mb-2 rounded">
+    <input type="text" id="endereco" placeholder="Endereço de entrega" class="border p-2 w-full mb-2 rounded">
+    <select id="pagamento" class="border p-2 w-full mb-2 rounded">
+      <option value="">Forma de pagamento</option>
+      <option value="Pix">Pix</option>
+      <option value="Cartão">Cartão</option>
+      <option value="Dinheiro">Dinheiro</option>
+    </select>
+    <button onclick="enviarPedido()" class="btn w-full">Finalizar Pedido no WhatsApp</button>
   </div>
 
-  <div class="cart-button position-fixed bottom-0 end-0 m-3">
-    <button class="btn btn-success" onclick="sendWhatsApp()">🛒 Finalizar Pedido (<span id="cart-count">0</span>)</button>
-  </div>
+  <script>
+    const produtos = [
+      { nome: "Ração Cães 15kg", preco: 89.99 },
+      { nome: "Ração Gatos 10kg", preco: 79.99 },
+      { nome: "Alpiste 1kg", preco: 14.99 },
+      { nome: "Feno Coelho", preco: 19.90 }
+    ];
 
-  <script src="script.js"></script>
+    const carrinho = [];
+
+    function atualizarCarrinho() {
+      const lista = document.getElementById("carrinho");
+      lista.innerHTML = "";
+      let total = 0;
+      carrinho.forEach((item, i) => {
+        total += item.preco;
+        lista.innerHTML += `<li>${item.nome} - R$ ${item.preco.toFixed(2)}</li>`;
+      });
+      document.getElementById("total").innerText = total.toFixed(2);
+    }
+
+    function adicionarProduto(i) {
+      carrinho.push(produtos[i]);
+      atualizarCarrinho();
+    }
+
+    function enviarPedido() {
+      const nome = document.getElementById("nome").value;
+      const endereco = document.getElementById("endereco").value;
+      const pagamento = document.getElementById("pagamento").value;
+      let total = 0;
+      let texto = "*Pedido P&B Casa de Rações*%0A";
+      carrinho.forEach(item => {
+        texto += `• ${item.nome} - R$ ${item.preco.toFixed(2)}%0A`;
+        total += item.preco;
+      });
+      texto += `%0A*Total: R$ ${total.toFixed(2)}*`;
+      texto += `%0A*Nome:* ${nome}`;
+      texto += `%0A*Endereço:* ${endereco}`;
+      texto += `%0A*Pagamento:* ${pagamento}`;
+      const fone = "5511988553006";
+      window.open(`https://wa.me/${fone}?text=${texto}`, "_blank");
+    }
+
+    const grid = document.getElementById("produtos");
+    produtos.forEach((p, i) => {
+      grid.innerHTML += `
+        <div class="card">
+          <h3 class="font-bold">${p.nome}</h3>
+          <p>R$ ${p.preco.toFixed(2)}</p>
+          <button onclick="adicionarProduto(${i})" class="btn">Adicionar</button>
+        </div>
+      `;
+    });
+  </script>
 </body>
 </html>
