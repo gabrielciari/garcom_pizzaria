@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
@@ -22,33 +22,157 @@
     const database = firebase.database();
   </script>
 
-  <!-- Seu estilo original -->
   <style>
-    /* ... (seu CSS original aqui — mantido igual) ... */
+    /* TODO: seu CSS original aqui (não alterei nada) */
   </style>
 </head>
 <body>
-  <header>🍕 Pedido de Pizzas - Garçom</header>
-  <main>
-    <!-- ... (seus campos e botões originais) ... -->
-  </main>
+<header>🍕 Pedido de Pizzas - Garçom</header>
+<main>
+  <!-- TODO: todos os campos e botões do seu código original -->
+</main>
 
-  <div id="alerta-pedido-pronto">🚨 Pedido pronto!</div>
-  <footer>™ Opportunità Pizzaria Social - Desenvolvido por ChatGPT</footer>
+<div id="alerta-pedido-pronto">🚨 Pedido pronto!</div>
+<footer>™ Opportunità Pizzaria Social - Desenvolvido por ChatGPT</footer>
 
-  <script>
-    const pizzaSelect = document.getElementById('pizza-select');
-    const bordaSelect = document.getElementById('bordas-select');
-    const bebidaSelect = document.getElementById('bebida-select');
-    const mesaInput = document.getElementById('mesa-input');
-    const pagamentoSelect = document.getElementById('pagamento-select');
-    const obsTextarea = document.getElementById('obs-textarea');
-    const addItemBtn = document.getElementById('add-item-btn');
-    const pedidoLista = document.getElementById('pedido-lista');
-    const finalizarBtn = document.getElementById('finalizar-btn');
+<script>
+  const pizzaSelect = document.getElementById('pizza-select');
+  const bordaSelect = document.getElementById('bordas-select');
+  const bebidaSelect = document.getElementById('bebida-select');
+  const mesaInput = document.getElementById('mesa-input');
+  const pagamentoSelect = document.getElementById('pagamento-select');
+  const obsTextarea = document.getElementById('obs-textarea');
+  const addItemBtn = document.getElementById('add-item-btn');
+  const pedidoLista = document.getElementById('pedido-lista');
+  const finalizarBtn = document.getElementById('finalizar-btn');
 
-    let pedidoItens = [];
+  let pedidoItens = [];
 
-    function atualizarLista() {
-      pedidoLista.innerHTML = '';
-      pedidoItens.forEach((item, index) =>
+  function atualizarLista() {
+    pedidoLista.innerHTML = '';
+    pedidoItens.forEach((item, index) => {
+      const div = document.createElement('div');
+      div.className = 'item';
+      div.innerHTML = `
+        <div>
+          <strong>${item.pizza}</strong> | Borda: ${item.borda} | Bebida: ${item.bebida || '-'}
+        </div>
+        <button class="remove-btn" data-index="${index}">&times;</button>
+      `;
+      pedidoLista.appendChild(div);
+    });
+
+    finalizarBtn.disabled = pedidoItens.length === 0 || mesaInput.value === '';
+  }
+
+  addItemBtn.addEventListener('click', () => {
+    const pizza = pizzaSelect.value;
+    const borda = bordaSelect.value;
+    const bebida = bebidaSelect.value;
+    const mesa = mesaInput.value.trim();
+
+    if (!pizza) {
+      alert('Selecione uma pizza!');
+      return;
+    }
+    if (!mesa) {
+      alert('Informe o número da mesa!');
+      return;
+    }
+
+    pedidoItens.push({ pizza, borda, bebida });
+    atualizarLista();
+
+    pizzaSelect.selectedIndex = 0;
+    bordaSelect.selectedIndex = 0;
+    bebidaSelect.selectedIndex = 0;
+  });
+
+  pedidoLista.addEventListener('click', (e) => {
+    if (e.target.classList.contains('remove-btn')) {
+      const idx = e.target.dataset.index;
+      pedidoItens.splice(idx, 1);
+      atualizarLista();
+    }
+  });
+
+  mesaInput.addEventListener('input', () => {
+    finalizarBtn.disabled = pedidoItens.length === 0 || mesaInput.value === '';
+  });
+
+  finalizarBtn.addEventListener('click', () => {
+    if (pedidoItens.length === 0) {
+      alert('Adicione ao menos um item ao pedido!');
+      return;
+    }
+    if (!mesaInput.value.trim()) {
+      alert('Informe o número da mesa!');
+      return;
+    }
+
+    const formaPagamento = pagamentoSelect.value;
+    const observacoes = obsTextarea.value.trim();
+    const mesa = mesaInput.value.trim();
+
+    // 🔥 Enviar pedido para o Firebase
+    const pedidoFirebase = {
+      mesa,
+      itens: pedidoItens,
+      formaPagamento,
+      observacoes,
+      status: "pendente",
+      timestamp: Date.now()
+    };
+    const novoPedidoRef = database.ref("pedidos").push();
+    novoPedidoRef.set(pedidoFirebase);
+
+    // 📲 Enviar também para WhatsApp
+    let msg = `🧾 *Novo pedido* - Mesa: ${mesa}\n\n`;
+    pedidoItens.forEach((item) => {
+      msg += `🍕 ${item.pizza} | Borda: ${item.borda} | Bebida: ${item.bebida || '-'}\n`;
+    });
+    msg += `\n💰 Forma de pagamento: ${formaPagamento}\n`;
+    if (observacoes) {
+      msg += `📝 Observações: ${observacoes}\n`;
+    }
+    const encodedMsg = encodeURIComponent(msg);
+    const whatsappNumber = '5511988553006';
+    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMsg}`;
+    window.open(whatsappUrl, '_blank');
+
+    // 🔄 Resetar pedido
+    pedidoItens = [];
+    atualizarLista();
+    mesaInput.value = '';
+    obsTextarea.value = '';
+    pagamentoSelect.selectedIndex = 0;
+
+    alert('Pedido enviado com sucesso!');
+  });
+
+  // ========== ALERTA DE PEDIDO PRONTO ==========
+  const alertaDiv = document.getElementById('alerta-pedido-pronto');
+  let somPedido = new Audio('https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg');
+
+  let ultimoAlerta = 0;
+  database.ref("pedidos").on("value", (snapshot) => {
+    const pedidos = snapshot.val();
+    for (let id in pedidos) {
+      const pedido = pedidos[id];
+      if (pedido.status === "pronto" && pedido.timestamp > ultimoAlerta) {
+        ultimoAlerta = pedido.timestamp;
+        mostrarAlerta();
+      }
+    }
+  });
+
+  function mostrarAlerta() {
+    alertaDiv.style.display = 'block';
+    somPedido.play();
+    setTimeout(() => {
+      alertaDiv.style.display = 'none';
+    }, 5000);
+  }
+</script>
+</body>
+</html>
