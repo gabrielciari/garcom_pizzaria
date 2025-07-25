@@ -1,90 +1,67 @@
 <!DOCTYPE html><html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Painel da Cozinha</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel do Garçom</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f5f5f5; }
-    h2 { text-align: center; background: #d35400; color: #fff; margin: 0; padding: 1rem; }
-    .container { padding: 20px; display: flex; gap: 20px; justify-content: space-around; }
-    .painel { width: 45%; background: #fff; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); padding: 1rem; }
-    .pedido { border-bottom: 1px solid #ccc; padding: 10px 0; }
-    .pronto { background: #d4edda; }
-    .alerta { background: #ffeeba; animation: piscar 1s infinite alternate; }
-    @keyframes piscar { from { background: #ffeeba; } to { background: #f8d7da; } }
-    button { margin-top: 5px; padding: 5px 10px; border: none; border-radius: 4px; cursor: pointer; }
-    .btn-pronto { background: #27ae60; color: #fff; }
-    .btn-entregue { background: #c0392b; color: #fff; }
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      padding: 20px;
+    }
+    h1 {
+      color: #333;
+    }
+    .pedido {
+      background-color: #fff;
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+    }
+    .pronto {
+      background-color: #d4edda;
+      border-color: #c3e6cb;
+    }
   </style>
 </head>
-<body>  <h2>Painel da Cozinha</h2>
-  <div class="container">
-    <div class="painel" id="cozinha">
-      <h3>Cozinha</h3>
-      <div id="pedidosCozinha"></div>
-    </div><div class="painel" id="garcom">
-  <h3>Garçom</h3>
-  <div id="pedidosGarcom"></div>
-</div>
+<body>
+  <h1>Painel do Garçom</h1>
+  <div id="painel-pedidos"></div>
+  <audio id="alerta-som" src="https://www.soundjay.com/buttons/sounds/beep-07.mp3" preload="auto"></audio>  <script>
+    let pedidosAnteriores = [];
 
-  </div><audio id="sino" src="https://www.soundjay.com/buttons/sounds/bell-ringing-05.mp3" preload="auto"></audio>
+    async function buscarPedidos() {
+      try {
+        const resposta = await fetch('/pedidos.json');
+        const pedidos = await resposta.json();
+        const painel = document.getElementById('painel-pedidos');
+        painel.innerHTML = '';
 
-  <script>
-    let pedidos = [
-      { id: 1, nome: 'Pizza Calabresa', status: 'pendente' },
-      { id: 2, nome: 'Pizza Quatro Queijos', status: 'pendente' },
-    ];
+        pedidos.forEach(pedido => {
+          const div = document.createElement('div');
+          div.classList.add('pedido');
+          if (pedido.status === 'pronto') {
+            div.classList.add('pronto');
 
-    function renderizarPedidos() {
-      const pedidosCozinha = document.getElementById('pedidosCozinha');
-      const pedidosGarcom = document.getElementById('pedidosGarcom');
+            const jaMostrado = pedidosAnteriores.find(p => p.id === pedido.id && p.status === 'pronto');
+            if (!jaMostrado) {
+              document.getElementById('alerta-som').play();
+              alert(`Pedido #${pedido.id} está pronto!`);
+            }
+          }
 
-      pedidosCozinha.innerHTML = '';
-      pedidosGarcom.innerHTML = '';
+          div.innerHTML = `<strong>Pedido #${pedido.id}</strong><br>${pedido.itens.join(', ')}<br>Status: ${pedido.status}`;
+          painel.appendChild(div);
+        });
 
-      pedidos.forEach(pedido => {
-        // Cozinha
-        const divCozinha = document.createElement('div');
-        divCozinha.className = 'pedido' + (pedido.status === 'pronto' ? ' pronto' : '');
-        divCozinha.innerHTML = `<strong>${pedido.nome}</strong><br/>`;
-        if (pedido.status !== 'pronto') {
-          const btn = document.createElement('button');
-          btn.className = 'btn-pronto';
-          btn.innerText = 'Marcar como Pronta';
-          btn.onclick = () => marcarComoPronta(pedido.id);
-          divCozinha.appendChild(btn);
-        }
-        pedidosCozinha.appendChild(divCozinha);
-
-        // Garçom
-        const divGarcom = document.createElement('div');
-        divGarcom.className = 'pedido' + (pedido.status === 'pronto' ? ' alerta' : '');
-        divGarcom.innerHTML = `<strong>${pedido.nome}</strong><br/>`;
-        if (pedido.status === 'pronto') {
-          const btn = document.createElement('button');
-          btn.className = 'btn-entregue';
-          btn.innerText = 'Marcar como Entregue';
-          btn.onclick = () => marcarComoEntregue(pedido.id);
-          divGarcom.appendChild(btn);
-        }
-        pedidosGarcom.appendChild(divGarcom);
-      });
-    }
-
-    function marcarComoPronta(id) {
-      const pedido = pedidos.find(p => p.id === id);
-      if (pedido) {
-        pedido.status = 'pronto';
-        document.getElementById('sino').play();
-        renderizarPedidos();
+        pedidosAnteriores = pedidos;
+      } catch (error) {
+        console.error('Erro ao buscar pedidos:', error);
       }
     }
 
-    function marcarComoEntregue(id) {
-      pedidos = pedidos.filter(p => p.id !== id);
-      renderizarPedidos();
-    }
-
-    renderizarPedidos();
+    setInterval(buscarPedidos, 5000);
+    buscarPedidos();
   </script></body>
 </html>
