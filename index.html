@@ -1,62 +1,55 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Garçom - Pedido de Pizza</title>
   <style>
-    body { font-family: Arial; padding: 20px; }
-    label, input, select { display: block; margin: 10px 0; }
-    button { padding: 10px; }
+    body { font-family: sans-serif; padding: 20px; }
+    input, select, button { padding: 10px; margin: 5px 0; width: 100%; }
+    #pedidos { margin-top: 20px; }
   </style>
 </head>
 <body>
-  <h2>Garçom - Novo Pedido</h2>
+  <h1>Painel do Garçom</h1>
   <form id="pedidoForm">
-    <label>Nome do Cliente:</label>
-    <input type="text" id="cliente" required>
-
-    <label>Sabor da Pizza:</label>
-    <select id="pizza">
-      <option>Calabresa</option>
-      <option>Marguerita</option>
-      <option>Portuguesa</option>
-      <option>Frango com Catupiry</option>
-      <option>Quatro Queijos</option>
-    </select>
-
-    <label>Tamanho:</label>
-    <select id="tamanho">
-      <option>Pequena</option>
-      <option>Média</option>
-      <option>Grande</option>
-    </select>
-
+    <input type="text" id="mesa" placeholder="Número da Mesa" required />
+    <input type="text" id="sabor" placeholder="Sabor da Pizza" required />
+    <input type="text" id="observacao" placeholder="Observações" />
     <button type="submit">Enviar Pedido</button>
   </form>
 
+  <div id="notificacoes" style="margin-top:30px; color:green;"></div>
+
   <script>
-    document.getElementById('pedidoForm').addEventListener('submit', function(e) {
+    const pedidoForm = document.getElementById('pedidoForm');
+    const notificacoes = document.getElementById('notificacoes');
+
+    pedidoForm.addEventListener('submit', (e) => {
       e.preventDefault();
-      const cliente = document.getElementById('cliente').value;
-      const pizza = document.getElementById('pizza').value;
-      const tamanho = document.getElementById('tamanho').value;
+      const mesa = document.getElementById('mesa').value;
+      const sabor = document.getElementById('sabor').value;
+      const observacao = document.getElementById('observacao').value;
 
-      const pedido = {
-        cliente, pizza, tamanho,
-        status: 'PENDENTE'
-      };
-
+      const pedido = { mesa, sabor, observacao, pronto: false };
       let pedidos = JSON.parse(localStorage.getItem('pedidos') || '[]');
       pedidos.push(pedido);
       localStorage.setItem('pedidos', JSON.stringify(pedidos));
 
-      const msg = `🍕 Novo Pedido\nCliente: ${cliente}\nPizza: ${pizza}\nTamanho: ${tamanho}`;
-      const fone = '5511988553006';
-      window.open(`https://wa.me/${fone}?text=${encodeURIComponent(msg)}`, '_blank');
-
       alert('Pedido enviado para a cozinha!');
-      this.reset();
+      pedidoForm.reset();
     });
+
+    // Recebe notificação da cozinha
+    setInterval(() => {
+      const pedidos = JSON.parse(localStorage.getItem('pedidos') || '[]');
+      const prontos = pedidos.filter(p => p.pronto && !p.notificado);
+      if (prontos.length) {
+        notificacoes.innerHTML = prontos.map(p => `Pizza da Mesa ${p.mesa} está pronta!`).join("<br>");
+        prontos.forEach(p => p.notificado = true);
+        localStorage.setItem('pedidos', JSON.stringify(pedidos));
+      }
+    }, 2000);
   </script>
 </body>
 </html>
