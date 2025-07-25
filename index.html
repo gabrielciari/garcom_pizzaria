@@ -1,338 +1,63 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Pedido de Pizzas - Garçom</title>
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
-  body {
-    margin: 0;
-    font-family: 'Fredoka One', cursive, sans-serif;
-    background: linear-gradient(120deg, #FF5F6D, #FFC371);
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    color: #333;
-  }
-  header {
-    margin: 20px 0 10px;
-    font-size: 2.2rem;
-    color: white;
-    text-shadow: 2px 2px 4px #800000;
-  }
-  main {
-    width: 90%;
-    max-width: 400px;
-    background: #fff8f0cc;
-    border-radius: 12px;
-    padding: 15px 20px;
-    box-shadow: 0 6px 15px rgba(0,0,0,0.15);
-  }
-  label {
-    font-weight: 600;
-    margin-top: 10px;
-    display: block;
-    color: #800000;
-  }
-  select, input[type="number"], input[type="text"], textarea {
-    width: 100%;
-    padding: 8px 10px;
-    margin-top: 5px;
-    border-radius: 8px;
-    border: 1.5px solid #d88a75;
-    font-size: 1rem;
-  }
-  textarea {
-    resize: vertical;
-  }
-  .btn {
-    background-color: #d8544a;
-    color: white;
-    font-weight: 700;
-    font-size: 1.2rem;
-    margin-top: 20px;
-    width: 100%;
-    border: none;
-    padding: 12px 0;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    box-shadow: 0 6px 10px rgba(216,84,74,0.7);
-  }
-  .btn:hover {
-    background-color: #bf3e38;
-  }
-  .item-list {
-    margin-top: 15px;
-    max-height: 300px;
-    overflow-y: auto;
-    border: 1px solid #f2b8a4;
-    border-radius: 8px;
-    background: #fff5f1;
-  }
-  .item {
-    display: flex;
-    justify-content: space-between;
-    padding: 7px 12px;
-    border-bottom: 1px solid #f2b8a4;
-    font-size: 1.1rem;
-  }
-  .item:last-child {
-    border-bottom: none;
-  }
-  .qty-input {
-    width: 50px;
-    border-radius: 6px;
-    border: 1.2px solid #d88a75;
-    padding: 3px 5px;
-    font-size: 1rem;
-    text-align: center;
-  }
-  .remove-btn {
-    background: transparent;
-    border: none;
-    font-weight: 900;
-    color: #c0392b;
-    cursor: pointer;
-    font-size: 1.3rem;
-  }
-  footer {
-    margin: 30px 0;
-    font-size: 0.9rem;
-    color: #fff;
-    text-align: center;
-    user-select: none;
-  }
-  /* Scrollbar estilizado */
-  .item-list::-webkit-scrollbar {
-    width: 8px;
-  }
-  .item-list::-webkit-scrollbar-thumb {
-    background: #d8544a;
-    border-radius: 10px;
-  }
-  .item-list::-webkit-scrollbar-track {
-    background: #ffd9cc;
-    border-radius: 10px;
-  }
+  <meta charset="UTF-8">
+  <title>Painel do Garçom</title>
+  <style>
+    .pedido-pronto {
+      background-color: #d4edda;
+      border: 2px solid #28a745;
+      padding: 10px;
+      margin: 5px 0;
+      animation: piscar 1s infinite;
+    }
 
-  /* Estilo do alerta visual */
-  #alerta-pedido-pronto {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background-color: #d8544a;
-    color: white;
-    padding: 15px 25px;
-    border-radius: 10px;
-    box-shadow: 0 6px 15px rgba(216,84,74,0.7);
-    font-weight: 700;
-    font-size: 1.2rem;
-    z-index: 9999;
-    display: none;
-  }
-</style>
+    @keyframes piscar {
+      0% { opacity: 1; }
+      50% { opacity: 0.5; }
+      100% { opacity: 1; }
+    }
+  </style>
 </head>
 <body>
-<header>🍕 Pedido de Pizzas - Garçom</header>
-<main>
-  <label for="pizza-select">Escolha a pizza</label>
-  <select id="pizza-select">
-    <option value="" disabled selected>-- Selecione --</option>
-    <option value="Calabresa">Calabresa</option>
-    <option value="Margherita">Margherita</option>
-    <option value="Portuguesa">Portuguesa</option>
-    <option value="Frango com Catupiry">Frango com Catupiry</option>
-    <option value="Quatro Queijos">Quatro Queijos</option>
-    <option value="Napolitana">Napolitana</option>
-  </select>
+  <h1>Painel do Garçom</h1>
+  <div id="pedidos"></div>
 
-  <label for="bordas-select">Escolha a borda</label>
-  <select id="bordas-select">
-    <option value="Normal" selected>Normal</option>
-    <option value="Catupiry">Catupiry</option>
-    <option value="Cheddar">Cheddar</option>
-    <option value="Chocolate">Chocolate</option>
-  </select>
+  <audio id="alertaAudio" src="https://www.soundjay.com/button/beep-07.wav" preload="auto"></audio>
 
-  <label for="bebida-select">Escolha a bebida</label>
-  <select id="bebida-select">
-    <option value="" disabled selected>-- Selecione --</option>
-    <option value="Coca-Cola 350ml">Coca-Cola 350ml</option>
-    <option value="Guaraná 350ml">Guaraná 350ml</option>
-    <option value="Fanta Laranja 350ml">Fanta Laranja 350ml</option>
-    <option value="Água 500ml">Água 500ml</option>
-    <option value="Suco Natural">Suco Natural</option>
-  </select>
+  <script>
+    let pedidosAnteriores = [];
 
-  <label for="mesa-input">Número da mesa</label>
-  <input type="number" id="mesa-input" min="1" placeholder="Ex: 5" />
+    function carregarPedidos() {
+      fetch('pedidos.json') // caminho para o arquivo onde os pedidos são salvos
+        .then(response => response.json())
+        .then(pedidos => {
+          const container = document.getElementById('pedidos');
+          container.innerHTML = '';
 
-  <label for="pagamento-select">Forma de pagamento</label>
-  <select id="pagamento-select">
-    <option value="Dinheiro" selected>Dinheiro</option>
-    <option value="Cartão">Cartão</option>
-    <option value="Pix">Pix</option>
-  </select>
+          pedidos.forEach(pedido => {
+            const div = document.createElement('div');
+            div.innerHTML = `Mesa ${pedido.mesa}: ${pedido.item} - <strong>${pedido.status}</strong>`;
 
-  <label for="obs-textarea">Observações (opcional)</label>
-  <textarea id="obs-textarea" rows="3" placeholder="Sem cebola, mais queijo, etc..."></textarea>
+            if (pedido.status === 'pronto') {
+              div.classList.add('pedido-pronto');
 
-  <button class="btn" id="add-item-btn">Adicionar ao pedido</button>
+              // Se o pedido não estava pronto antes, tocar som
+              const anterior = pedidosAnteriores.find(p => p.id === pedido.id);
+              if (!anterior || anterior.status !== 'pronto') {
+                document.getElementById('alertaAudio').play();
+              }
+            }
 
-  <div class="item-list" id="pedido-lista"></div>
+            container.appendChild(div);
+          });
 
-  <button class="btn" id="finalizar-btn" style="margin-top: 20px;" disabled>Finalizar Pedido</button>
-</main>
-
-<div id="alerta-pedido-pronto">🚨 Pedido pronto!</div>
-
-<footer>™ Opportunità Pizzaria Social - Desenvolvido por ChatGPT</footer>
-
-<script>
-  const pizzaSelect = document.getElementById('pizza-select');
-  const bordaSelect = document.getElementById('bordas-select');
-  const bebidaSelect = document.getElementById('bebida-select');
-  const mesaInput = document.getElementById('mesa-input');
-  const pagamentoSelect = document.getElementById('pagamento-select');
-  const obsTextarea = document.getElementById('obs-textarea');
-  const addItemBtn = document.getElementById('add-item-btn');
-  const pedidoLista = document.getElementById('pedido-lista');
-  const finalizarBtn = document.getElementById('finalizar-btn');
-
-  let pedidoItens = [];
-
-  function atualizarLista() {
-    pedidoLista.innerHTML = '';
-    pedidoItens.forEach((item, index) => {
-      const div = document.createElement('div');
-      div.className = 'item';
-
-      div.innerHTML = `
-        <div>
-          <strong>${item.pizza}</strong> | Borda: ${item.borda} | Bebida: ${item.bebida || '-'}
-        </div>
-        <button class="remove-btn" data-index="${index}">&times;</button>
-      `;
-      pedidoLista.appendChild(div);
-    });
-
-    finalizarBtn.disabled = pedidoItens.length === 0 || mesaInput.value === '';
-  }
-
-  addItemBtn.addEventListener('click', () => {
-    const pizza = pizzaSelect.value;
-    const borda = bordaSelect.value;
-    const bebida = bebidaSelect.value;
-    const mesa = mesaInput.value.trim();
-
-    if (!pizza) {
-      alert('Selecione uma pizza!');
-      return;
-    }
-    if (!mesa) {
-      alert('Informe o número da mesa!');
-      return;
+          pedidosAnteriores = pedidos;
+        });
     }
 
-    pedidoItens.push({ pizza, borda, bebida });
-    atualizarLista();
-
-    // Limpar campos para novo item
-    pizzaSelect.selectedIndex = 0;
-    bordaSelect.selectedIndex = 0;
-    bebidaSelect.selectedIndex = 0;
-  });
-
-  pedidoLista.addEventListener('click', (e) => {
-    if (e.target.classList.contains('remove-btn')) {
-      const idx = e.target.dataset.index;
-      pedidoItens.splice(idx, 1);
-      atualizarLista();
-    }
-  });
-
-  mesaInput.addEventListener('input', () => {
-    finalizarBtn.disabled = pedidoItens.length === 0 || mesaInput.value === '';
-  });
-
-  finalizarBtn.addEventListener('click', () => {
-    if (pedidoItens.length === 0) {
-      alert('Adicione ao menos um item ao pedido!');
-      return;
-    }
-    if (!mesaInput.value.trim()) {
-      alert('Informe o número da mesa!');
-      return;
-    }
-
-    const formaPagamento = pagamentoSelect.value;
-    const observacoes = obsTextarea.value.trim();
-    const mesa = mesaInput.value.trim();
-
-    // Montar mensagem para WhatsApp
-    let msg = `🧾 *Novo pedido* - Mesa: ${mesa}\n\n`;
-
-    pedidoItens.forEach((item, i) => {
-      msg += `🍕 ${item.pizza} | Borda: ${item.borda} | Bebida: ${item.bebida || '-'}\n`;
-    });
-    msg += `\n💰 Forma de pagamento: ${formaPagamento}\n`;
-    if (observacoes) {
-      msg += `📝 Observações: ${observacoes}\n`;
-    }
-    const encodedMsg = encodeURIComponent(msg);
-    const whatsappNumber = '5511988553006'; // Seu número da cozinha
-
-    // Abrir WhatsApp no celular/PC
-    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMsg}`;
-    window.open(whatsappUrl, '_blank');
-
-    // Enviar pedido para o painel via localStorage (simples pra demo)
-    const pedidosPainel = JSON.parse(localStorage.getItem('pedidosPainel') || '[]');
-    pedidosPainel.push({mesa, itens: pedidoItens, formaPagamento, observacoes, timestamp: Date.now()});
-    localStorage.setItem('pedidosPainel', JSON.stringify(pedidosPainel));
-
-    // Resetar pedido
-    pedidoItens = [];
-    atualizarLista();
-    mesaInput.value = '';
-    obsTextarea.value = '';
-    pagamentoSelect.selectedIndex = 0;
-
-    alert('Pedido enviado com sucesso!');
-  });
-
-  // ========== ALERTA DE PEDIDO PRONTO ==========
-  const alertaDiv = document.getElementById('alerta-pedido-pronto');
-  let somPedido = new Audio('https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg'); // som de alerta
-
-  let ultimoTimestamp = 0;
-
-  function checarPedidosProntos() {
-    // Pega os pedidos do localStorage do painel de cozinha
-    const pedidos = JSON.parse(localStorage.getItem('pedidosProntos') || '[]');
-
-    // Se tiver pedido novo com timestamp maior que o último que avisou, mostra alerta
-    pedidos.forEach(pedido => {
-      if (pedido.timestamp > ultimoTimestamp) {
-        ultimoTimestamp = pedido.timestamp;
-        mostrarAlerta();
-      }
-    });
-  }
-
-  function mostrarAlerta() {
-    alertaDiv.style.display = 'block';
-    somPedido.play();
-    setTimeout(() => {
-      alertaDiv.style.display = 'none';
-    }, 5000);
-  }
-
-  // Verifica a cada 3 segundos
-  setInterval(checarPedidosProntos, 3000);
-</script>
+    setInterval(carregarPedidos, 3000); // Verifica a cada 3 segundos
+    carregarPedidos(); // primeira chamada
+  </script>
 </body>
 </html>
