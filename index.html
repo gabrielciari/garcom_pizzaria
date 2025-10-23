@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Painel de Fornecedor - LevelUp Store</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
@@ -24,6 +24,13 @@ body, html {
     100% {background-position:0% 50%;}
 }
 
+/* --- Layout geral --- */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    width: calc(100% - 40px);
+}
+
 /* --- Login --- */
 #login, #panel {
     min-height: 100vh;
@@ -36,15 +43,15 @@ body, html {
 
 #login-box {
     background: rgba(0,0,0,0.85);
-    padding: 40px;
+    padding: 30px;
     border-radius: 15px;
     box-shadow: 0 10px 25px rgba(0,0,0,0.6);
     text-align: center;
-    width: 350px;
+    width: 360px;
 }
 
 #login-box h2 {
-    margin-bottom: 25px;
+    margin-bottom: 18px;
     color: #00c6ff;
     text-shadow: 1px 1px 5px #000;
 }
@@ -52,10 +59,10 @@ body, html {
 #login-box input {
     width: 100%;
     padding: 12px;
-    margin: 10px 0;
+    margin: 8px 0;
     border-radius: 8px;
     border: none;
-    font-size: 16px;
+    font-size: 15px;
     outline: none;
 }
 
@@ -68,18 +75,10 @@ body, html {
     font-size: 16px;
     border-radius: 8px;
     cursor: pointer;
-    transition: 0.3s;
+    transition: 0.25s;
 }
 
-#login-box button:hover {
-    background: linear-gradient(45deg, #0072ff, #00c6ff);
-}
-
-#login-box .error {
-    color: #ff4c4c;
-    margin-top: 10px;
-    font-weight: bold;
-}
+#login-box button:hover { transform: translateY(-3px); }
 
 /* --- Painel --- */
 #panel {
@@ -90,13 +89,28 @@ body, html {
     width: 100%;
 }
 
-#panel h2 {
-    text-align: center;
-    margin-bottom: 30px;
-    color: #00c6ff;
+.header-row {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom: 20px;
+}
+
+.header-row h2 {
+    margin: 0;
+    color:#00c6ff;
     text-shadow: 1px 1px 5px #000;
 }
 
+/* grid produtos + carrinho */
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 24px;
+    align-items: start;
+}
+
+/* produtos */
 .products {
     display: grid;
     grid-template-columns: repeat(auto-fill,minmax(250px,1fr));
@@ -107,7 +121,7 @@ body, html {
     background: rgba(255,255,255,0.05);
     border-radius: 15px;
     box-shadow: 0 5px 20px rgba(0,0,0,0.5);
-    padding: 20px;
+    padding: 18px;
     text-align: center;
     transition: transform 0.3s, box-shadow 0.3s;
     position: relative;
@@ -118,243 +132,137 @@ body, html {
     box-shadow: 0 15px 25px rgba(0,0,0,0.7);
 }
 
-.product-card h3 {
-    margin: 10px 0 5px;
-    color: #00c6ff;
-    text-shadow: 1px 1px 3px #000;
+.product-card h3 { margin:10px 0 6px; color:#00c6ff; }
+.product-card p { margin:6px 0; font-weight:bold; }
+.product-card input[type="number"], .product-card input[type="text"] {
+    width:100%; padding:8px; margin:6px 0; border-radius:8px; border:none; outline:none;
 }
-
-.product-card p {
-    margin: 5px 0;
-    font-weight: bold;
-    color: #fff;
-}
-
-.product-card input[type="number"], 
-.product-card input[type="text"] {
-    width: 100%;
-    padding: 8px;
-    margin: 5px 0;
-    border-radius: 8px;
-    border: none;
-    outline: none;
-    font-size: 14px;
-}
-
 .product-card button {
-    padding: 10px 15px;
-    background: linear-gradient(45deg, #00c6ff, #0072ff);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    margin-top: 5px;
-    transition: 0.3s;
+    padding:10px 12px; background:linear-gradient(45deg,#00c6ff,#0072ff); color:white; border:none; border-radius:8px; cursor:pointer;
 }
-
-.product-card button:hover {
-    background: linear-gradient(45deg, #0072ff, #00c6ff);
-}
-
 .new-badge {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: #ffdc00;
-    color: #000;
-    padding: 5px 10px;
-    font-size: 12px;
-    font-weight: bold;
-    border-radius: 8px;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.4);
+    position:absolute; top:10px; right:10px;
+    background:#ffdc00; color:#000; padding:5px 10px; font-size:12px; font-weight:700; border-radius:8px; box-shadow:0 3px 6px rgba(0,0,0,0.4);
 }
 
-/* --- Carrinho flutuante --- */
+/* carrinho */
 #carrinho {
-    background: rgba(0,0,0,0.7);
-    padding: 20px;
+    background: rgba(0,0,0,0.75);
+    padding: 18px;
     border-radius: 15px;
-    margin-top: 30px;
+    margin-top: 0;
     position: sticky;
     top: 20px;
+    height: fit-content;
 }
 
-#carrinho h3 {
-    color: #00c6ff;
-    margin-bottom: 15px;
-}
-
+#carrinho h3 { color:#00c6ff; margin-top:0; margin-bottom:12px; }
+#itensCarrinho { max-height: 400px; overflow:auto; margin-bottom:12px; }
 .carrinho-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-    padding: 10px;
-    background: rgba(255,255,255,0.05);
-    border-radius: 10px;
+    display:flex; justify-content:space-between; align-items:center; gap:8px;
+    padding:8px; background: rgba(255,255,255,0.03); border-radius:8px; margin-bottom:8px;
 }
+.carrinho-item span { flex:1; font-size:14px; }
+.carrinho-item button { background:#ff4c4c; padding:6px 8px; border-radius:6px; border:none; cursor:pointer; color:#fff; }
 
-.carrinho-item span {
-    flex: 1;
+/* input código fornecedor dentro do carrinho */
+#codigoFornecedor {
+    width:100%; padding:10px; border-radius:8px; border:2px solid rgba(255,255,255,0.08); outline:none; font-size:15px;
+    box-sizing: border-box;
 }
+#codigoFornecedor.valid { border-color: #4ade80; box-shadow: 0 0 8px rgba(74,222,128,0.12); }
+#codigoFornecedor.invalid { border-color: #ff6b6b; box-shadow: 0 0 8px rgba(255,107,107,0.08); }
 
-.carrinho-item button {
-    background: #ff4c4c;
-    margin-left: 10px;
-    padding: 5px 10px;
-    border-radius: 5px;
-    border: none;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.carrinho-item button:hover {
-    background: #ff0000;
-}
-
-#totalCarrinho {
-    text-align: right;
-    font-size: 18px;
-    font-weight: bold;
-    margin-top: 10px;
-    color: #00c6ff;
-}
-
+/* total e botão enviar */
+#totalCarrinho { text-align:right; font-weight:700; color:#00c6ff; margin-top:8px; }
 #btnEnviar {
-    margin-top: 15px;
-    width: 100%;
-    padding: 15px;
-    font-size: 18px;
-    font-weight: bold;
-    border: none;
-    border-radius: 10px;
-    background: linear-gradient(45deg, #00c6ff, #0072ff);
-    color: white;
-    cursor: pointer;
-    transition: 0.3s;
+    margin-top:12px; width:100%; padding:12px; font-size:16px; border:none; border-radius:10px; cursor:pointer;
+    background: linear-gradient(45deg,#00c6ff,#0072ff); color:white; font-weight:700; transition:0.25s;
 }
+#btnEnviar[disabled] { opacity:0.5; cursor:not-allowed; transform:none; }
 
-#btnEnviar:hover {
-    background: linear-gradient(45deg, #0072ff, #00c6ff);
-}
-
-/* --- Pop-up customizada --- */
-#popup {
-    display: none;
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    z-index: 10000;
-}
-
-.popup-bg {
-    position: absolute;
-    top:0; left:0;
-    width:100%; height:100%;
-    background: rgba(0,0,0,0.7);
-}
-
+/* pop-up customizada */
+#popup { display:none; position:fixed; top:0; left:0; width:100%; height:100%; z-index:10000; }
+.popup-bg { position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); }
 .popup-box {
-    position: absolute;
-    top: -200px;
-    left:50%;
-    transform: translateX(-50%);
-    background: linear-gradient(135deg, #00c6ff, #0072ff);
-    padding: 30px 40px;
-    border-radius: 15px;
-    text-align: center;
-    color: white;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-    max-width: 90%;
-    transition: top 0.5s ease;
+    position:absolute; top:-220px; left:50%; transform:translateX(-50%); background:linear-gradient(135deg,#00c6ff,#0072ff);
+    padding:22px 26px; border-radius:14px; color:#fff; box-shadow:0 10px 35px rgba(0,0,0,0.5); max-width:90%;
+    transition: top 0.45s ease;
 }
+.popup-box.show { top:50%; transform: translate(-50%,-50%); }
+.popup-msg { margin-bottom:12px; font-size:15px; }
+.popup-actions { display:flex; gap:10px; justify-content:center; }
+.popup-actions button { padding:8px 14px; border-radius:10px; border:none; cursor:pointer; font-weight:700; }
 
-.popup-box.show {
-    top: 50%;
-    transform: translate(-50%, -50%);
-}
+/* toast */
+#toast { position:fixed; bottom:20px; right:20px; background:#00c6ff; color:#fff; padding:12px 18px; border-radius:10px; box-shadow:0 8px 20px rgba(0,0,0,0.4); opacity:0; transform:translateY(18px); transition:all .35s ease; z-index:10001; }
+#toast.show { opacity:1; transform:translateY(0); }
 
-.popup-box p {
-    margin-bottom: 20px;
-    font-size: 16px;
-}
-
-.popup-box button {
-    padding: 10px 20px;
-    border:none;
-    border-radius: 10px;
-    background: white;
-    color: #0072ff;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.popup-box button:hover {
-    background: #e0e0e0;
-}
-
-/* --- Toast --- */
-#toast {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: #00c6ff;
-    color: #fff;
-    padding: 15px 25px;
-    border-radius: 10px;
-    font-weight: bold;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-    opacity: 0;
-    pointer-events: none;
-    transform: translateY(20px);
-    transition: all 0.5s ease;
-    z-index: 10001;
-}
-
-#toast.show {
-    opacity: 1;
-    pointer-events: auto;
-    transform: translateY(0);
+/* responsivo */
+@media (max-width: 980px) {
+    .grid { grid-template-columns: 1fr; }
+    #login-box { width: 92%; }
 }
 </style>
 </head>
 <body>
 
+<!-- LOGIN -->
 <div id="login">
-    <div id="login-box">
+    <div id="login-box" class="container">
         <h2>Entrar como Fornecedor</h2>
-        <input type="text" id="codigo" placeholder="Digite seu código">
+        <input type="text" id="codigo" placeholder="Digite seu código (ex: FORNECEDOR123)" />
+        <input type="text" id="telefone" placeholder="Digite seu telefone (ex: +5562 9xxxx-xxxx)" />
         <button onclick="entrar()">Entrar</button>
-        <p class="error" id="error"></p>
+        <p class="error" id="error" style="color:#ff6b6b; font-weight:700; margin-top:8px;"></p>
     </div>
 </div>
 
-<div id="panel">
-    <h2>Bem-vindo, Fornecedor!</h2>
-    <div class="products" id="products"></div>
+<!-- PAINEL -->
+<div id="panel" class="container">
+    <div class="header-row">
+        <h2>Bem-vindo, Fornecedor!</h2>
+        <div style="text-align:right;">
+            <div id="welcomeInfo" style="font-size:14px; color: #dff6ff"></div>
+        </div>
+    </div>
 
-    <div id="carrinho">
-        <h3>Carrinho</h3>
-        <div id="itensCarrinho"></div>
-        <div id="totalCarrinho">Total: R$0,00</div>
-        <button id="btnEnviar" onclick="enviarWhatsApp()">Enviar todos produtos pelo WhatsApp</button>
+    <div class="grid">
+        <div>
+            <div class="products" id="products"></div>
+        </div>
+
+        <aside id="carrinho">
+            <h3>Carrinho</h3>
+            <div id="itensCarrinho">Nenhum item no carrinho</div>
+
+            <div style="margin:10px 0;">
+                <input type="text" id="codigoFornecedor" placeholder="Digite seu código de fornecedor" oninput="validarCodigoFornecedor()" />
+            </div>
+
+            <div id="totalCarrinho">Total: R$0,00</div>
+            <button id="btnEnviar" onclick="confirmarEnvio()" disabled>Enviar todos produtos pelo WhatsApp</button>
+        </aside>
     </div>
 </div>
 
-<!-- Pop-up -->
+<!-- POPUP -->
 <div id="popup">
-    <div class="popup-bg"></div>
-    <div class="popup-box" id="popupBox">
-        <p id="popup-msg"></p>
-        <button onclick="fecharPopup()">OK</button>
+    <div class="popup-bg" onclick="fecharPopup()"></div>
+    <div class="popup-box" id="popupBox" role="dialog" aria-modal="true">
+        <div class="popup-msg" id="popup-msg"></div>
+        <div class="popup-actions" id="popup-actions">
+            <button id="popup-btn-cancel" style="background:rgba(255,255,255,0.2); color:#fff;" onclick="fecharPopup()">Cancelar</button>
+            <button id="popup-btn-ok" style="background:#fff; color:#0072ff;" onclick="fecharPopup()">OK</button>
+        </div>
     </div>
 </div>
 
-<!-- Toast -->
+<!-- TOAST -->
 <div id="toast"></div>
 
 <script>
+/* ====== Configs / dados ====== */
 const codigosLiberados = ["FORNECEDOR123","VIP2025","LEVELUP","CODIGOEXTRA"];
 const suporteWhats = "+556296094975";
 
@@ -366,26 +274,45 @@ const produtos = [
 ];
 
 let carrinho = [];
+let loginCodigo = null; // código que o usuário usou no login
 
+/* ====== Login ====== */
 function entrar(){
     const codigo = document.getElementById("codigo").value.trim();
+    const telefone = document.getElementById("telefone").value.trim();
+    const error = document.getElementById("error");
+    error.textContent = "";
+
     if(!codigo){
-        mostrarPopup("Digite um código!");
+        mostrarPopupMsg("Digite um código!");
         return;
     }
+    if(!telefone){
+        mostrarPopupMsg("Digite seu telefone!");
+        return;
+    }
+    // validação do código contra a lista (server-side é recomendado, aqui é validação UX)
     if(!codigosLiberados.includes(codigo)){
-        mostrarPopup("Código não liberado!");
+        mostrarPopupMsg("Código não liberado!");
         return;
     }
+
+    // salvar telefone e código no sessionStorage (curto prazo)
+    sessionStorage.setItem("telefoneFornecedor", telefone);
+    sessionStorage.setItem("codigoFornecedorLogin", codigo);
+    loginCodigo = codigo;
+
     document.getElementById("login").style.display = "none";
-    document.getElementById("panel").style.display = "flex";
+    document.getElementById("panel").style.display = "block";
+    document.getElementById("welcomeInfo").textContent = `Logado como: ${codigo} • ${telefone}`;
+
     carregarProdutos();
 }
 
+/* ====== Produtos e Carrinho ====== */
 function carregarProdutos(){
     const container = document.getElementById("products");
     container.innerHTML = "";
-
     produtos.forEach(prod => {
         const card = document.createElement("div");
         card.className = "product-card";
@@ -393,24 +320,24 @@ function carregarProdutos(){
         let camposExtras = '';
         if(prod.tipo === "avakin"){
             camposExtras = `
-                <input type="text" placeholder="Código de Amigo" class="codigoAmigo">
-                <input type="text" placeholder="Nome do Perfil" class="nomePerfil">
+                <input type="text" placeholder="Código de Amigo" class="codigoAmigo" />
+                <input type="text" placeholder="Nome do Perfil" class="nomePerfil" />
             `;
         }
 
-        let badge = prod.novo ? `<div class="new-badge">Novo</div>` : '';
+        const badge = prod.novo ? `<div class="new-badge">Novo</div>` : '';
 
         card.innerHTML = `
             ${badge}
             <h3>${prod.nome}</h3>
             <p>${prod.preco}</p>
-            <input type="number" min="1" value="1" class="quantidade">
+            <input type="number" min="1" value="1" class="quantidade" />
             ${camposExtras}
             <button onclick="adicionarCarrinho(${prod.id}, this)">Adicionar ao Carrinho</button>
         `;
-
         container.appendChild(card);
     });
+    atualizarEnviarState();
 }
 
 function adicionarCarrinho(prodId, btn){
@@ -419,27 +346,34 @@ function adicionarCarrinho(prodId, btn){
     const quantidade = parseInt(card.querySelector(".quantidade").value) || 1;
 
     let codigoAmigo = "", nomePerfil = "";
-    if(produto.tipo === "avakin"){ 
-        codigoAmigo = card.querySelector(".codigoAmigo").value.trim();
-        nomePerfil = card.querySelector(".nomePerfil").value.trim();
-        if(!codigoAmigo || !nomePerfil){
-            mostrarPopup("Preencha o código de amigo e o nome do perfil para produtos de Avakin Life!");
+    if(produto.tipo === "avakin"){
+        const ca = card.querySelector(".codigoAmigo").value.trim();
+        const np = card.querySelector(".nomePerfil").value.trim();
+        if(!ca || !np){
+            mostrarPopupMsg("Preencha o código de amigo e o nome do perfil para produtos de Avakin Life!");
             return;
         }
+        codigoAmigo = ca;
+        nomePerfil = np;
     }
 
     carrinho.push({produto, quantidade, codigoAmigo, nomePerfil});
     atualizarCarrinho();
     mostrarToast("Produto adicionado ao carrinho!");
     tocarSom();
+    atualizarEnviarState();
 }
 
 function atualizarCarrinho(){
     const container = document.getElementById("itensCarrinho");
     container.innerHTML = "";
+    if(carrinho.length === 0){
+        container.textContent = "Nenhum item no carrinho";
+        document.getElementById("totalCarrinho").textContent = `Total: R$0,00`;
+        return;
+    }
 
     let total = 0;
-
     carrinho.forEach((item, index) => {
         const precoNumero = parseFloat(item.produto.preco.replace("R$","").replace(",","."));
         total += precoNumero * item.quantidade;
@@ -456,20 +390,69 @@ function atualizarCarrinho(){
     document.getElementById("totalCarrinho").textContent = `Total: R$${total.toFixed(2).replace(".",",")}`;
 }
 
+/* remover */
 function removerCarrinho(index){
     carrinho.splice(index,1);
     atualizarCarrinho();
     mostrarToast("Produto removido do carrinho!");
+    atualizarEnviarState();
 }
 
-function enviarWhatsApp(){
+/* ====== Validação do código do carrinho ====== */
+function validarCodigoFornecedor(){
+    const input = document.getElementById("codigoFornecedor");
+    const val = input.value.trim();
+    // O requisito: "tem que ser exatamente oq tá cadastrado no código"
+    // verificamos que o campo bate com o código usado no login e que está na lista liberada.
+    const codigoLogin = sessionStorage.getItem("codigoFornecedorLogin") || loginCodigo;
+    const isValid = val !== "" && codigosLiberados.includes(val) && codigoLogin && val === codigoLogin;
+
+    input.classList.remove("valid","invalid");
+    if(val === "") {
+        // neutral
+    } else if(isValid){
+        input.classList.add("valid");
+    } else {
+        input.classList.add("invalid");
+    }
+    atualizarEnviarState();
+}
+
+/* ativa/desativa botão enviar */
+function atualizarEnviarState(){
+    const btn = document.getElementById("btnEnviar");
+    const codigoInput = document.getElementById("codigoFornecedor").value.trim();
+    const codigoLogin = sessionStorage.getItem("codigoFornecedorLogin") || loginCodigo;
+    const codigoOk = codigoInput !== "" && codigosLiberados.includes(codigoInput) && codigoInput === codigoLogin;
+    btn.disabled = !(carrinho.length > 0 && codigoOk);
+}
+
+/* ====== Confirmação e envio ====== */
+function confirmarEnvio(){
     if(carrinho.length === 0){
-        mostrarPopup("O carrinho está vazio!");
+        mostrarPopupMsg("O carrinho está vazio!");
         return;
     }
-    if(!confirm("Deseja realmente enviar todos os produtos pelo WhatsApp?")) return;
+    const codigo = document.getElementById("codigoFornecedor").value.trim();
+    const codigoLogin = sessionStorage.getItem("codigoFornecedorLogin") || loginCodigo;
+    if(!codigo){
+        mostrarPopupMsg("Digite o código do fornecedor antes de enviar!");
+        return;
+    }
+    if(!codigosLiberados.includes(codigo) || codigo !== codigoLogin){
+        mostrarPopupMsg("Código de fornecedor inválido! Deve ser exatamente o código usado no login.");
+        return;
+    }
 
-    let mensagem = "Olá! Gostaria de pegar os seguintes produtos:\n\n";
+    mostrarPopupConfirm("Deseja realmente enviar todos os produtos pelo WhatsApp?", () => {
+        enviarWhatsApp(codigo);
+    });
+}
+
+function enviarWhatsApp(codigoFornecedor){
+    const telefone = sessionStorage.getItem("telefoneFornecedor") || "";
+    let mensagem = `Olá! Meu telefone: ${telefone}\nCódigo de Fornecedor: ${codigoFornecedor}\nGostaria de pegar os seguintes produtos:\n\n`;
+
     carrinho.forEach(item => {
         mensagem += `Produto: ${item.produto.nome}\nPreço: ${item.produto.preco}\nQuantidade: ${item.quantidade}\n`;
         if(item.produto.tipo === "avakin"){
@@ -477,41 +460,86 @@ function enviarWhatsApp(){
         }
         mensagem += "\n";
     });
+
     const link = `https://api.whatsapp.com/send?phone=${suporteWhats}&text=${encodeURIComponent(mensagem)}`;
     window.open(link, "_blank");
 }
 
-/* --- Pop-up --- */
-function mostrarPopup(msg){
+/* ====== Pop-up custom (mensagem simples e confirmação) ====== */
+function mostrarPopupMsg(msg){
     const popup = document.getElementById("popup");
-    const popupBox = document.getElementById("popupBox");
+    const box = document.getElementById("popupBox");
     document.getElementById("popup-msg").textContent = msg;
+    // configurar para apenas OK
+    const actions = document.getElementById("popup-actions");
+    const btnOk = document.getElementById("popup-btn-ok");
+    const btnCancel = document.getElementById("popup-btn-cancel");
+    btnOk.textContent = "OK";
+    btnOk.style.background = "#fff";
+    btnOk.style.color = "#0072ff";
+    btnCancel.style.display = "none";
+    btnOk.onclick = fecharPopup;
+
     popup.style.display = "block";
-    setTimeout(()=>popupBox.classList.add("show"), 10);
+    setTimeout(()=> box.classList.add("show"), 10);
+}
+
+function mostrarPopupConfirm(msg, onYes){
+    const popup = document.getElementById("popup");
+    const box = document.getElementById("popupBox");
+    document.getElementById("popup-msg").textContent = msg;
+    const btnOk = document.getElementById("popup-btn-ok");
+    const btnCancel = document.getElementById("popup-btn-cancel");
+    btnCancel.style.display = "inline-block";
+    btnOk.textContent = "Sim";
+    btnOk.style.background = "#fff";
+    btnOk.style.color = "#0072ff";
+    btnOk.onclick = () => {
+        fecharPopup();
+        setTimeout(()=> onYes && onYes(), 200);
+    };
+    btnCancel.onclick = fecharPopup;
+
+    popup.style.display = "block";
+    setTimeout(()=> box.classList.add("show"), 10);
 }
 
 function fecharPopup(){
     const popup = document.getElementById("popup");
-    const popupBox = document.getElementById("popupBox");
-    popupBox.classList.remove("show");
-    setTimeout(()=> popup.style.display = "none", 500);
+    const box = document.getElementById("popupBox");
+    box.classList.remove("show");
+    setTimeout(()=> popup.style.display = "none", 400);
 }
 
-/* --- Toast --- */
+/* ====== Toast e som ====== */
 function mostrarToast(msg){
-    const toast = document.getElementById("toast");
-    toast.textContent = msg;
-    toast.classList.add("show");
-    setTimeout(()=>toast.classList.remove("show"), 2500);
+    const t = document.getElementById("toast");
+    t.textContent = msg;
+    t.classList.add("show");
+    setTimeout(()=> t.classList.remove("show"), 2600);
 }
 
-/* --- Som discreto --- */
 function tocarSom(){
-    const audio = new Audio('https://www.soundjay.com/buttons/sounds/button-09.mp3');
-    audio.volume = 0.2;
-    audio.play();
+    try{
+        const audio = new Audio('https://www.soundjay.com/buttons/sounds/button-09.mp3');
+        audio.volume = 0.18;
+        audio.play().catch(()=>{/* autoplay block */});
+    }catch(e){}
 }
-</script>
 
+/* ====== Inicialização: manter telefone/código se já estiver em sessionStorage ====== */
+(function initFromSession(){
+    const telefone = sessionStorage.getItem("telefoneFornecedor");
+    const codigo = sessionStorage.getItem("codigoFornecedorLogin");
+    if(telefone && codigo){
+        // se já tinha sessão, pular login automaticamente (opcional)
+        // não forçamos auto-login para segurança; mas preenchermos campos se o usuário voltar ao login.
+        const codigoInput = document.getElementById("codigo");
+        const telefoneInput = document.getElementById("telefone");
+        if(codigoInput) codigoInput.value = codigo;
+        if(telefoneInput) telefoneInput.value = telefone;
+    }
+})();
+</script>
 </body>
 </html>
